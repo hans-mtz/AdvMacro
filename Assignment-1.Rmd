@@ -3,19 +3,21 @@ title: "Advanced Macro"
 author: "Hans Martinez"
 date: "`r format(Sys.time(), '%b %d, %Y')`"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
   bookdown::pdf_document2: default
 subtitle: Assignment 1
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, cache=TRUE}
 knitr::opts_chunk$set(echo = TRUE)
-library(JuliaCall)
+knitr::opts_chunk$set(engine.path = list(
+  julia = '/Applications/Julia-1.5.app/Contents/Resources/julia/bin'
+))
 ```
 ```{r julia, eval =TRUE, include=FALSE}
-julia<-julia_setup(JULIA_HOME = "/Applications/Julia-1.5.app/Contents/Resources/julia/bin")
-
+library(JuliaCall)
+julia_home<-julia_setup(JULIA_HOME = "/Applications/Julia-1.5.app/Contents/Resources/julia/bin")
 ```
 
 ### Competitive equilibrium for this economy
@@ -122,23 +124,28 @@ Let $\alpha=\frac{1}{3}, z=1$. Use planner's solution, starting from steady stat
 
 A. Capital decreases to 80% of its steady state.
 
-```{julia, eval = TRUE}
+```{julia, eval=FALSE}
+# Julia code
+a = 1/3
+b = 0.6
+k_star = (a*b)^(1/(1-a))
+
 
 #Defining vars
-a = 1/3;
-b = 0.6;
-k_star = (a*b)^(1/(1-a));
-r = 1/b;
+a = 1/3
+b = 0.6
+k_star = (a*b)^(1/(1-a))
+r = 1/b
 
 # Initializing array for loop
-m, n = 100,2;
-K = fill(0.0, (m, n));
+m, n = 100,2
+K = fill(0.0, (m, n))
 
 #defining policy fn
-g = x -> a*b*(x^a);
+g = x -> a*b*(x^a)
 
 # loop for capital
-k = 0.8*k_star;
+k = 0.8*k_star
 for i in 1:m
     K[i, 1] = k
     K[i, 2] = g(K[i,1])
@@ -146,29 +153,74 @@ for i in 1:m
 end
 
 # defining fn's for the rest of the variables
-w = x -> (1-a)x^a;
-y = x -> x^a;
-c = (p,q) -> y(p)-q;
-r = x -> a*(x^(a-1));
-int = r.(K[1:100,2]);
-wage = w.(K[1:100,1]);
-output = y.(K[1:100,1]);
-consumption = c.(K[1:100,1],K[1:100,2]);
+w = x -> (1-a)x^a
+y = x -> x^a
+c = (p,q) -> y(p)-q
+r = x -> a*(x^(a-1))
+int = r.(K[1:100,2])
+wage = w.(K[1:100,1])
+output = y.(K[1:100,1])
+cons = c.(K[1:100,1],K[1:100,2])
 
 # importing packages for plotting
-# import Pkg; Pkg.add("Plots")
+import Pkg; Pkg.add("Plots")
 using Plots
 gr()
 
-
-
 # plotting capital
-plot(1:10,fill(k_star,10), label="capital SS");
+plot(1:10,fill(k_star,10), label="capital SS")
 plot!(1:10,K[1:10,1], label="capital path", linestyle = :dot, legend = :bottomright)
-Plots.xlabel!("t");
-Plots.title!("Capital");
-p1
+xlabel!("t")
+title!("Capital")
+savefig("/Users/Hans/Desktop/capital.pdf")
 
+# plotting output
+
+plot(1:10,fill(y(k_star),10), label="output SS")
+plot!(1:10,output[1:10], label="output path", linestyle = :dot, legend = :bottomright)
+xlabel!("t")
+title!("Output")
+savefig("/Users/Hans/Desktop/output.pdf")
+
+# plotting consumption
+
+plot(1:10,fill(c(k_star,k_star),10), label="consumption SS")
+plot!(1:10,cons[1:10], label="consumption path", linestyle = :dot, legend = :bottomright)
+xlabel!("t")
+title!("Consumption")
+savefig("/Users/Hans/Desktop/consumption.pdf")
+
+# plotting wage
+
+plot(1:10,fill(w(k_star),10), label="wage SS")
+plot!(1:10,wage[1:10], label="wage path", linestyle = :dot, legend = :bottomright)
+xlabel!("t")
+title!("Wage")
+savefig("/Users/Hans/Desktop/wage.pdf")
+
+# plotting capital rental rate
+plot(1:10,fill(r(k_star),10), label="capital rental rate SS")
+plot!(1:10,int[1:10], label="rate path", linestyle = :dot, legend = :topright)
+xlabel!("t")
+title!("Capital rental rate")
+savefig("/Users/Hans/Desktop/capitalr.pdf")
 ```
 
 
+```{r, out.width='70%',fig.align='center', fig.cap='Wage and capital', echo=FALSE, fig.show='hold'}
+knitr::include_graphics('wage.pdf')
+knitr::include_graphics('capital.pdf')
+```
+
+```{r, out.width='70%', fig.align='center', fig.cap='Capital rate and output', echo=FALSE, fig.show='hold'}
+knitr::include_graphics('capitalr.pdf')
+knitr::include_graphics('output.pdf')
+```
+
+```{r, out.width='70%', fig.align='center', fig.cap='Consumption', echo=FALSE, eval=TRUE, , fig.show='hold'}
+knitr::include_graphics('consumption.pdf')
+```
+
+```{r, out.width='100%', fig.align='center', fig.cap='Consumption', echo=FALSE, eval=FALSE}
+
+```
