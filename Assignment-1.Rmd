@@ -221,6 +221,89 @@ knitr::include_graphics('output.pdf')
 knitr::include_graphics('consumption.pdf')
 ```
 
-```{r, out.width='100%', fig.align='center', fig.cap='Consumption', echo=FALSE, eval=FALSE}
+\newpage
 
+B. Productivity increases permanently by 5%
+
+```{julia, eval=FALSE}
+# Julia code
+# Increase in productivity permanently by 5%
+
+#defining policy fn and ss capital with productivity increases
+k_starp = (a*b*1.5)^(1/(1-a))
+g1 = x -> a*b*1.05*(x^a)
+
+# Initializing array for loop
+K1 = fill(0.0, (m, n))
+
+# loop for capital
+k1 = k_starp
+for i in 1:m
+    K1[i, 1] = k1
+    K1[i, 2] = g(K[i,1])
+    global k1 = K[i, 2]
+end
+
+# defining fn's for the rest of the variables
+w1 = x -> (1-a)*(x^a) #does not change
+y1 = x -> 1.5*(x^a)
+c1 = (p,q) -> y(p)-q #does not change
+r1 = x -> a*(1.5*x^(a-1))
+int_p = r1.(K1[1:100,2])
+wage_p = w1.(K1[1:100,1])
+output_p = y1.(K1[1:100,1])
+cons_p = c1.(K1[1:100,1],K1[1:100,2])
+
+# plotting capital
+plot(1:10,fill(k_star,10), label="capital SS")
+plot!(1:10,K1[1:10,1], label="capital path", linestyle = :dot, legend = :bottomright)
+xlabel!("t")
+title!("Capital (productivity increase)")
+savefig("/Users/Hans/Desktop/capitalp.pdf")
+
+# plotting output
+
+plot(1:10,fill(y1(k_star),10), label="output SS")
+plot!(1:10,output_p[1:10], label="output path", linestyle = :dot, legend = :bottomright)
+xlabel!("t")
+title!("Output (productivity increase)")
+savefig("/Users/Hans/Desktop/outputp.pdf")
+
+# plotting consumption
+
+plot(1:10,fill(c1(k_star,k_star),10), label="consumption SS")
+plot!(1:10,cons_p[1:10], label="consumption path", linestyle = :dot, legend = :bottomright)
+xlabel!("t")
+title!("Consumption (productivity increase)")
+savefig("/Users/Hans/Desktop/consumptionp.pdf")
+
+# plotting wage
+
+plot(1:10,fill(w1(k_star),10), label="wage SS")
+plot!(1:10,wage_p[1:10], label="wage path", linestyle = :dot, legend = :bottomright)
+xlabel!("t")
+title!("Wage (productivity increase)")
+savefig("/Users/Hans/Desktop/wagep.pdf")
+
+# plotting capital rental rate
+plot(1:10,fill(r1(k_star),10), label="capital rental rate SS")
+plot!(1:10,int_p[1:10], label="rate path", linestyle = :dot, legend = :topright)
+xlabel!("t")
+title!("Capital rental rate (productivity increase)")
+savefig("/Users/Hans/Desktop/capitalrp.pdf")
 ```
+
+```{r, out.width='70%',fig.align='center', fig.cap='Wage and capital (productiviy increase)', echo=FALSE, fig.show='hold'}
+knitr::include_graphics('wagep.pdf')
+knitr::include_graphics('capitalp.pdf')
+```
+
+```{r, out.width='70%', fig.align='center', fig.cap='Capital rate and output (productivity increase)', echo=FALSE, fig.show='hold'}
+knitr::include_graphics('capitalrp.pdf')
+knitr::include_graphics('outputp.pdf')
+```
+
+```{r, out.width='70%', fig.align='center', fig.cap='Consumption (productivity increase)', echo=FALSE, eval=TRUE, , fig.show='hold'}
+knitr::include_graphics('consumptionp.pdf')
+```
+

@@ -464,8 +464,7 @@ c^*&amp;=z(\alpha\beta z)^{\frac{\alpha}{1-\alpha}}- (\alpha\beta z)^{\frac{1}{1
 <h3>Obtain the path of {c,k,r,w,y} in the following cases</h3>
 <p>Let <span class="math inline">\(\alpha=\frac{1}{3}, z=1\)</span>. Use planner’s solution, starting from steady state:</p>
 <p>A. Capital decreases to 80% of its steady state.</p>
-<pre class="julia"><code>
-#Defining vars
+<pre class="julia"><code>#Defining vars
 a = 1/3;
 b = 0.6;
 k_star = (a*b)^(1/(1-a));
@@ -494,23 +493,20 @@ r = x -&gt; a*(x^(a-1));
 int = r.(K[1:100,2]);
 wage = w.(K[1:100,1]);
 output = y.(K[1:100,1]);
-consumption = c.(K[1:100,1],K[1:100,2]);
-
-# importing packages for plotting
-# import Pkg; Pkg.add(&quot;Plots&quot;)
-using Plots
-gr()</code></pre>
-<pre><code>## Plots.GRBackend()</code></pre>
-<pre class="julia"><code>
-plot(Plots.fakedata(50,5),w=3)</code></pre>
-<pre><code>## Plot{Plots.GRBackend() n=5}</code></pre>
-<pre class="julia"><code>
-# # plotting capital
-# p1 = Plots.plot(1:10,fill(k_star,10), label=&quot;capital SS&quot;);
-# Plots.plot!(p1, 1:10,K[1:10,1], label=&quot;capital path&quot;, linestyle = :dot, legend = :bottomright);
-# Plots.xlabel!(p1,&quot;t&quot;);
-# Plots.title!(p1,&quot;Capital&quot;)
-# p1</code></pre>
+consumption = c.(K[1:100,1],K[1:100,2]);</code></pre>
+<pre class="r"><code># importing packages for plotting
+library(JuliaCall)
+julia_home&lt;-julia_setup(JULIA_HOME = &quot;/Applications/Julia-1.5.app/Contents/Resources/julia/bin&quot;)
+julia_install_package_if_needed(&quot;Plots&quot;)
+julia_library(&quot;Plots&quot;)</code></pre>
+<pre class="r"><code>julia_eval(&quot;gr()&quot;)</code></pre>
+<pre><code>## Julia Object of type Plots.GRBackend.
+## Plots.GRBackend()</code></pre>
+<pre class="r"><code># plotting capital
+julia_eval(&quot;plot(1:10,fill(k_star,10))&quot;)</code></pre>
+<pre><code>## Julia Object of type Plots.Plot{Plots.GRBackend}.
+## Plot{Plots.GRBackend() n=1}</code></pre>
+<pre class="r"><code># plot!(1:10,K[1:10,1], label='capital path', linestyle = :dot, legend = :bottomright, xlabel='t', title='Capital')&quot;)</code></pre>
 </div>
 
 
