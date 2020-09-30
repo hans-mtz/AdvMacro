@@ -2,7 +2,7 @@
 # cd("/Volumes/SSD Hans/Github/MacroFall2020/AdvMacro")
 # mkpath("Assignment2")
 cd("/Volumes/SSD Hans/Github/MacroFall2020/AdvMacro/Assignment2")
-# mkpath("Figures")
+ mkpath("graphs")
 
 
 # Pkg.add("Parameters")
@@ -218,14 +218,14 @@ end
     @time V_20, G_kp_20, G_l_20, k_grid_20 = Solve_VFI_loop(20,p)
     @time V_50, G_kp_50, G_l_50, k_grid_50 = Solve_VFI_loop(50,p)
     @time V_200, G_kp_200, G_l_200,k_grid_200 = Solve_VFI_loop(200,p)
-    @time V_1000, G_kp_1000, G_l_1000, k_grid_1000 = Solve_VFI_loop(1000,p)
+    #@time V_1000, G_kp_1000, G_l_1000, k_grid_1000 = Solve_VFI_loop(1000,p)
 
     gr()
     # Value Function Analytical vs 200
         plot(k_grid_20,V_20,linetype=:scatter,marker=(:diamond,3), msw=0 , label="VFI - n_k=50")
         plot!(k_grid_50,V_50,linetype=:scatter,marker=(:diamond,3),msw=0 , label = "VFI - n_k=20")
         plot!(k_grid_200,V_200,linetype=:scatter,marker=(:diamond,3),msw=0 , label = "VFI - n_k=200")
-        plot!(k_grid_1000,V_1000,linetype=:scatter,marker=(:diamond,3),msw=0 , label = "VFI - n_k=1000")
+        #plot!(k_grid_1000,V_1000,linetype=:scatter,marker=(:diamond,3),msw=0 , label = "VFI - n_k=1000")
         xlabel!("Capital")
         ylabel!("Value")
         title!("Value Fn VFI")
@@ -237,7 +237,7 @@ end
         plot!(k_grid_50,k_grid_50[G_kp_50],linetype=:scatter,marker=(:diamond,3),msw=0 ,label="VFI - n_k=50")
         plot!(k_grid_20,k_grid_20[G_kp_20],linetype=:scatter,marker=(:diamond,3),msw=0 ,label = "VFI - n_k=20")
         plot!(k_grid_200,k_grid_200[G_kp_200],linetype=:scatter,marker=(:diamond,3),msw=0 ,label = "VFI - n_k=200")
-        plot!(k_grid_1000,k_grid_1000[G_kp_1000],linetype=:scatter,marker=(:diamond,3),msw=0 ,label = "VFI - n_k=1000")
+        #plot!(k_grid_1000,k_grid_1000[G_kp_1000],linetype=:scatter,marker=(:diamond,3),msw=0 ,label = "VFI - n_k=1000")
         xlabel!("Capital")
         ylabel!("Capital")
         title!("Capital VFI")
@@ -272,14 +272,14 @@ end
     Euler_20 = Euler_grid(k_grid_20,G_kp_20)
     Euler_50 = Euler_grid(k_grid_50,G_kp_50)
     Euler_200 = Euler_grid(k_grid_200,G_kp_200)
-    Euler_1000 = Euler_grid(k_grid_1000,G_kp_1000)
+    #Euler_1000 = Euler_grid(k_grid_1000,G_kp_1000)
 
     # Graphing Euler Error 200
     plot([0,2*k_ss],[0,0],lw=1,linecolor=RGB(0.6,0.6,0.6),label=nothing,title = "Euler Equation Error (%)")
     plot!(k_grid_50,Euler_50,linetype=:scatter,marker=(:diamond,3),msw=0 ,label="VFI - n_k=50")
     plot!(k_grid_20,Euler_20,linetype=:scatter,marker=(:diamond,3),msw=0 ,label="VFI - n_k=20")
-    plot!(k_grid_20,Euler_200,linetype=:scatter,marker=(:diamond,3),msw=0 ,label="VFI - n_k=200")
-    plot!(k_grid_20,Euler_1000,linetype=:scatter,marker=(:diamond,3),msw=0 ,label="VFI - n_k=1000")
+    plot!(k_grid_200,Euler_200,linetype=:scatter,marker=(:diamond,3),msw=0 ,label="VFI - n_k=200")
+    #plot!(k_grid_20,Euler_1000,linetype=:scatter,marker=(:diamond,3),msw=0 ,label="VFI - n_k=1000")
     xlabel!("Capital")
     ylabel!("Percentage Points")
     title!("Euler Error VFI")
@@ -320,22 +320,22 @@ end
             # Utility matrix
             U_mat = [utility(k_grid[i],k_grid[j],get_me_l(k_grid[i],k_grid[j],p),p) for i in 1:n_k, j in 1:n_k]
             # Solve VFI
-            V, G_kp = VFI_grid(x->HT_grid_mat(x,U_mat,k_grid,p,n_H),k_grid,p)
+            V, G_kp, G_l = VFI_grid(x->HT_grid_mat(x,U_mat,k_grid,p,n_H),k_grid,p)
             # Return Solution
-            return V,G_kp, k_grid
+            return V,G_kp, G_l, k_grid
         end
 
         # Execute Numerical VFI
-        @time V_20, G_kp_20, k_grid_20 = Solve_VFI_HPI(20,20,p)
-        @time V_50, G_kp_50, k_grid_50 = Solve_VFI_HPI(20,50,p)
-        @time V_200, G_kp_200, k_grid_200 = Solve_VFI_HPI(20,200,p)
-        @time V_1000, G_kp_1000, k_grid_1000 = Solve_VFI_HPI(20,1000,p)
+        @time V_20, G_kp_20, G_l_20, k_grid_20 = Solve_VFI_HPI(20,20,p)
+        @time V_50, G_kp_50, G_l_50, k_grid_50 = Solve_VFI_HPI(20,50,p)
+        @time V_200, G_kp_200, G_l_200, k_grid_200 = Solve_VFI_HPI(20,200,p)
+        #@time V_1000, G_kp_1000, k_grid_1000 = Solve_VFI_HPI(20,1000,p)
 
         # Value Function Plot
             plot(k_grid_20,V_20,linetype=:scatter,marker=(:diamond,3), msw=0 , label="VFI - n_k=50")
             plot!(k_grid_50,V_50,linetype=:scatter,marker=(:diamond,3),msw=0 , label = "VFI - n_k=20")
             plot!(k_grid_200,V_200,linetype=:scatter,marker=(:diamond,3),msw=0 , label = "VFI - n_k=200")
-            plot!(k_grid_1000,V_1000,linetype=:scatter,marker=(:diamond,3),msw=0 , label = "VFI - n_k=1000")
+            #plot!(k_grid_1000,V_1000,linetype=:scatter,marker=(:diamond,3),msw=0 , label = "VFI - n_k=1000")
             xlabel!("Capital")
             ylabel!("Value")
             title!("Value Function VFI-HPI")
@@ -347,7 +347,7 @@ end
             plot!(k_grid_50,k_grid_50[G_kp_50],linetype=:scatter,marker=(:diamond,3),msw=0 ,label="VFI - n_k=50")
             plot!(k_grid_20,k_grid_20[G_kp_20],linetype=:scatter,marker=(:diamond,3),msw=0 ,label = "VFI - n_k=20")
             plot!(k_grid_200,k_grid_200[G_kp_200],linetype=:scatter,marker=(:diamond,3),msw=0 ,label = "VFI - n_k=200")
-            plot!(k_grid_1000,k_grid_1000[G_kp_1000],linetype=:scatter,marker=(:diamond,3),msw=0 ,label = "VFI - n_k=1000")
+            #plot!(k_grid_1000,k_grid_1000[G_kp_1000],linetype=:scatter,marker=(:diamond,3),msw=0 ,label = "VFI - n_k=1000")
             xlabel!("Capital")
             ylabel!("Capital")
             title!("Capital VFI-HPI")
@@ -356,14 +356,14 @@ end
             Euler_20 = Euler_grid(k_grid_20,G_kp_20)
             Euler_50 = Euler_grid(k_grid_50,G_kp_50)
             Euler_200 = Euler_grid(k_grid_200,G_kp_200)
-            Euler_1000 = Euler_grid(k_grid_1000,G_kp_1000)
+            #Euler_1000 = Euler_grid(k_grid_1000,G_kp_1000)
 
             # Graphing Euler Error 200
             plot([0,2*k_ss],[0,0],lw=1,linecolor=RGB(0.6,0.6,0.6),label=nothing,title = "Euler Equation Error (%)")
             plot!(k_grid_50,Euler_50,linetype=:scatter,marker=(:diamond,3),msw=0 ,label="VFI - n_k=50")
             plot!(k_grid_20,Euler_20,linetype=:scatter,marker=(:diamond,3),msw=0 ,label="VFI - n_k=20")
-            plot!(k_grid_20,Euler_200,linetype=:scatter,marker=(:diamond,3),msw=0 ,label="VFI - n_k=200")
-            plot!(k_grid_20,Euler_1000,linetype=:scatter,marker=(:diamond,3),msw=0 ,label="VFI - n_k=1000")
+            plot!(k_grid_200,Euler_200,linetype=:scatter,marker=(:diamond,3),msw=0 ,label="VFI - n_k=200")
+            #plot!(k_grid_20,Euler_1000,linetype=:scatter,marker=(:diamond,3),msw=0 ,label="VFI - n_k=1000")
             xlabel!("Capital")
             ylabel!("Percentage Points")
             title!("Euler Error VFI-HPI")
