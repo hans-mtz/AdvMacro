@@ -1,0 +1,7 @@
+Pkg.add("Roots")
+
+using Roots
+
+f(x) = exp(x) - x^4
+
+find_zero(f, (8,9), Bisection())
