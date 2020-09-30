@@ -126,10 +126,8 @@ A. Capital decreases to 80% of its steady state.
 
 ```{julia, eval=FALSE}
 # Julia code
-a = 1/3
-b = 0.6
-k_star = (a*b)^(1/(1-a))
-
+# setting working directory
+cd("/Volumes/SSD Hans/Github/MacroFall2020/AdvMacro")
 
 #Defining vars
 a = 1/3
@@ -172,7 +170,7 @@ plot(1:10,fill(k_star,10), label="capital SS")
 plot!(1:10,K[1:10,1], label="capital path", linestyle = :dot, legend = :bottomright)
 xlabel!("t")
 title!("Capital")
-savefig("/Users/Hans/Desktop/capital.pdf")
+savefig("graphs/capital")
 
 # plotting output
 
@@ -180,7 +178,7 @@ plot(1:10,fill(y(k_star),10), label="output SS")
 plot!(1:10,output[1:10], label="output path", linestyle = :dot, legend = :bottomright)
 xlabel!("t")
 title!("Output")
-savefig("/Users/Hans/Desktop/output.pdf")
+savefig("graphs/output")
 
 # plotting consumption
 
@@ -188,7 +186,7 @@ plot(1:10,fill(c(k_star,k_star),10), label="consumption SS")
 plot!(1:10,cons[1:10], label="consumption path", linestyle = :dot, legend = :bottomright)
 xlabel!("t")
 title!("Consumption")
-savefig("/Users/Hans/Desktop/consumption.pdf")
+savefig("graphs/consumption")
 
 # plotting wage
 
@@ -196,29 +194,30 @@ plot(1:10,fill(w(k_star),10), label="wage SS")
 plot!(1:10,wage[1:10], label="wage path", linestyle = :dot, legend = :bottomright)
 xlabel!("t")
 title!("Wage")
-savefig("/Users/Hans/Desktop/wage.pdf")
+savefig("graphs/wage")
 
 # plotting capital rental rate
 plot(1:10,fill(r(k_star),10), label="capital rental rate SS")
 plot!(1:10,int[1:10], label="rate path", linestyle = :dot, legend = :topright)
 xlabel!("t")
 title!("Capital rental rate")
-savefig("/Users/Hans/Desktop/capitalr.pdf")
+savefig("graphs/capitalr")
+
 ```
 
 
-```{r, out.width='70%',fig.align='center', fig.cap='Wage and capital', echo=FALSE, fig.show='hold'}
-knitr::include_graphics('wage.pdf')
-knitr::include_graphics('capital.pdf')
+```{r, out.width='70%',fig.align='center', fig.cap='Wage and capital', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('graphs/wage.png')
+knitr::include_graphics('graphs/capital.png')
 ```
 
-```{r, out.width='70%', fig.align='center', fig.cap='Capital rate and output', echo=FALSE, fig.show='hold'}
-knitr::include_graphics('capitalr.pdf')
-knitr::include_graphics('output.pdf')
+```{r, out.width='70%', fig.align='center', fig.cap='Capital rate and output', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('graphs/capitalr.png')
+knitr::include_graphics('graphs/output.png')
 ```
 
-```{r, out.width='70%', fig.align='center', fig.cap='Consumption', echo=FALSE, eval=TRUE, , fig.show='hold'}
-knitr::include_graphics('consumption.pdf')
+```{r, out.width='70%', fig.align='center', fig.cap='Consumption', echo=FALSE, eval=TRUE, , fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('graphs/consumption.png')
 ```
 
 \newpage
@@ -229,8 +228,8 @@ B. Productivity increases permanently by 5%
 # Julia code
 # Increase in productivity permanently by 5%
 
-#defining policy fn and ss capital with productivity increases
 k_starp = (a*b*1.5)^(1/(1-a))
+#defining policy fn with productivity increases
 g1 = x -> a*b*1.05*(x^a)
 
 # Initializing array for loop
@@ -254,12 +253,13 @@ wage_p = w1.(K1[1:100,1])
 output_p = y1.(K1[1:100,1])
 cons_p = c1.(K1[1:100,1],K1[1:100,2])
 
+
 # plotting capital
 plot(1:10,fill(k_star,10), label="capital SS")
 plot!(1:10,K1[1:10,1], label="capital path", linestyle = :dot, legend = :bottomright)
 xlabel!("t")
 title!("Capital (productivity increase)")
-savefig("/Users/Hans/Desktop/capitalp.pdf")
+savefig("graphs/capitalp")
 
 # plotting output
 
@@ -267,7 +267,7 @@ plot(1:10,fill(y1(k_star),10), label="output SS")
 plot!(1:10,output_p[1:10], label="output path", linestyle = :dot, legend = :bottomright)
 xlabel!("t")
 title!("Output (productivity increase)")
-savefig("/Users/Hans/Desktop/outputp.pdf")
+savefig("graphs/outputp")
 
 # plotting consumption
 
@@ -275,7 +275,7 @@ plot(1:10,fill(c1(k_star,k_star),10), label="consumption SS")
 plot!(1:10,cons_p[1:10], label="consumption path", linestyle = :dot, legend = :bottomright)
 xlabel!("t")
 title!("Consumption (productivity increase)")
-savefig("/Users/Hans/Desktop/consumptionp.pdf")
+savefig("graphs/consumptionp")
 
 # plotting wage
 
@@ -283,27 +283,28 @@ plot(1:10,fill(w1(k_star),10), label="wage SS")
 plot!(1:10,wage_p[1:10], label="wage path", linestyle = :dot, legend = :bottomright)
 xlabel!("t")
 title!("Wage (productivity increase)")
-savefig("/Users/Hans/Desktop/wagep.pdf")
+savefig("graphs/wagep")
 
 # plotting capital rental rate
 plot(1:10,fill(r1(k_star),10), label="capital rental rate SS")
 plot!(1:10,int_p[1:10], label="rate path", linestyle = :dot, legend = :topright)
 xlabel!("t")
 title!("Capital rental rate (productivity increase)")
-savefig("/Users/Hans/Desktop/capitalrp.pdf")
+savefig("graphs/capitalrp")
+
 ```
 
-```{r, out.width='70%',fig.align='center', fig.cap='Wage and capital (productiviy increase)', echo=FALSE, fig.show='hold'}
-knitr::include_graphics('wagep.pdf')
-knitr::include_graphics('capitalp.pdf')
+```{r, out.width='70%',fig.align='center', fig.cap='Wage and capital (productiviy increase)', echo=FALSE, fig.show='hold', fig.path = 'graphs/'}
+knitr::include_graphics('graphs/wagep.png')
+knitr::include_graphics('graphs/capitalp.png')
 ```
 
-```{r, out.width='70%', fig.align='center', fig.cap='Capital rate and output (productivity increase)', echo=FALSE, fig.show='hold'}
-knitr::include_graphics('capitalrp.pdf')
-knitr::include_graphics('outputp.pdf')
+```{r, out.width='70%', fig.align='center', fig.cap='Capital rate and output (productivity increase)', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('graphs/capitalrp.png')
+knitr::include_graphics('graphs/outputp.png')
 ```
 
-```{r, out.width='70%', fig.align='center', fig.cap='Consumption (productivity increase)', echo=FALSE, eval=TRUE, , fig.show='hold'}
-knitr::include_graphics('consumptionp.pdf')
+```{r, out.width='70%', fig.align='center', fig.cap='Consumption (productivity increase)', echo=FALSE, eval=TRUE, , fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('graphs/consumptionp.png')
 ```
 
