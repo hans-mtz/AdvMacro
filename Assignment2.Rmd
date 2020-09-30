@@ -149,10 +149,15 @@ julia_home<-julia_setup(JULIA_HOME = "/Applications/Julia-1.5.app/Contents/Resou
 ```
 
 
-```{r, out.width='70%',fig.align='center', fig.cap='Wage and capital', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+```{r, out.width='65%',fig.align='center', fig.cap='Plain VFI', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
 knitr::include_graphics('Assignment2/graphs/VFI_V.png')
 knitr::include_graphics('Assignment2/graphs/VFI_cap.png')
 knitr::include_graphics('Assignment2/graphs/VFI_Euler.png')
 ```
 
+```{r, out.width='65%',fig.align='center', fig.cap='HPI-VFI', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('Assignment2/graphs/HPI_V.png')
+knitr::include_graphics('Assignment2/graphs/HPI_Cap.png')
+knitr::include_graphics('Assignment2/graphs/HPI_Euler.png')
+```
 

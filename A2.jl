@@ -308,8 +308,10 @@ end
             end
             # Recover Policy Functions
             G_kp   = [G_kp[i][2] for i in 1:n_k] # G_kp is a Cartesian index
+            G_l = get_me_l.(k_grid,k_grid[G_kp],fill(p,n_k))
+
             # Return output
-            return V, G_kp
+            return V, G_kp, G_l
         end
 
 
