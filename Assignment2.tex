@@ -75,6 +75,9 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Fix footnotes in tables (requires footnote package)
+\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{longtable}}{}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -114,16 +117,24 @@
 \providecommand{\subtitle}[1]{}
 \subtitle{Assignment 2}
 \author{Hans Martinez}
-\date{Sep 30, 2020}
+\date{Oct 04, 2020}
 
 \begin{document}
 \maketitle
 
-        \subsection{Competitive equilibrium}
-            \indent Arrow-Debreu competitive equilibrium consists of prices $\{p_t,w_t,r_t\}_{t=0}^{\infty}$, allocations for the firm $\{y_t,k_t^d,l_t^d\}_{t=0}^{\infty}$ and the allocations for household $\{c_t,k_t^s,l_t^s\}_{t=0}^{\infty}$ such that,
-            \begin{itemize}
-            \item[(i)] Given a sequence of prices $\{p_t,w_t,r_t\}_{t=0}^{\infty}$, the firm allocation $\{y_t,k_t^d,l_t^d\}_{t=0}^{\infty}$ solves the firm problem,
-            \begin{equation}
+\hypertarget{competitive-equilibrium}{%
+\subsection{Competitive equilibrium}\label{competitive-equilibrium}}
+
+Arrow-Debreu competitive equilibrium consists of prices
+\(\{p_t,w_t,r_t\}_{t=0}^{\infty}\), allocations for the firm
+\(\{y_t,k_t^d,l_t^d\}_{t=0}^{\infty}\) and the allocations for household
+\(\{c_t,k_t^s,l_t^s\}_{t=0}^{\infty}\) such that,
+
+\begin{itemize}
+\item
+  Given a sequence of prices \(\{p_t,w_t,r_t\}_{t=0}^{\infty}\), the
+  firm allocation \(\{y_t,k_t^d,l_t^d\}_{t=0}^{\infty}\) solves the firm
+  problem, \begin{equation}
             \begin{split}
                 \max_{\{y_t,k_t,l_t\}_{t=0}^{\infty}}&\sum_{t=0}^{\infty}
                 p_t(y_t-r_tk_t-w_tl_t)\\
@@ -131,9 +142,10 @@
                 &y_t,k_t,l_t\geq 0, \forall t \geq 0.
             \end{split}
             \end{equation}
-            
-            \item[(ii)] Given a sequence of prices $\{p_t,w_t,r_t\}_{t=0}^{\infty}$, the household allocation $\{c_t,k_t^s,l_t^s\}_{t=0}^{\infty}$ solves the household problem,
-            \begin{equation}
+\item
+  Given a sequence of prices \(\{p_t,w_t,r_t\}_{t=0}^{\infty}\), the
+  household allocation \(\{c_t,k_t^s,l_t^s\}_{t=0}^{\infty}\) solves the
+  household problem, \begin{equation}
             \begin{split}
                 \max_{\{c_t,k_{t+1},l_t\}_{t=0}^{\infty}}&\sum_{t=0}^{\infty}
                 \beta ^t(\frac{c_t^{1-\sigma}}{1-\sigma}-\chi \frac{l_t^{1+\eta}}{1+\eta})\\
@@ -143,29 +155,28 @@
                 &k_0 \text{ given.}
             \end{split}
             \end{equation}
-            
-            \item[(iii)] The market clear conditions,
-            \begin{equation*}
+\item
+  The market clear conditions, \begin{equation*}
             \begin{split}
                 zk_t^{\alpha}l_t^{1-\alpha}+(1-\delta)k_t&=c_t+k_{t+1} ;\\
                 l_t^d&=l_t^s    ;\\
                 k_t^d&=k_t^s    .
             \end{split}
             \end{equation*}
-            \end{itemize}
-        
-        \subsection{Steady state}
-            For firm problem,
-            \begin{equation}
+\end{itemize}
+
+\hypertarget{steady-state}{%
+\subsection{Steady state}\label{steady-state}}
+
+For firm problem, \begin{equation}
             \begin{split}
                 r_t =&z\alpha k_t^{\alpha -1}l_t^{1-\alpha}\\
                 w_t =&z(1-\alpha) k_t^{\alpha}l_t^{-\alpha}\\
                 r_tk_t+w_tl_t&=zk_t^{\alpha}l_t^{1-\alpha}
             \end{split}
             \end{equation}
-            
-            Then for household problem,
-            \begin{equation}
+
+Then for household problem, \begin{equation}
             \begin{split}
                 \mathcal{L}(\{c_t,k_{t+1},l_t\}_{t=0}^{\infty};\lambda_t)=&\sum_{t=0}^{\infty}
                 \beta ^t(\frac{c_t^{1-\sigma}}{1-\sigma}-\chi \frac{l_t^{1+\eta}}{1+\eta})+\lambda_t(\sum_{t=0}^{\infty}p_t(zk_t^{\alpha}l_t^{1-\alpha}-c_t-k_{t+1}+(1-\delta)k_t)\\
@@ -175,9 +186,8 @@
                 c_t=&zk_t^{\alpha}l_t^{1-\alpha}-k_{t+1}+(1-\delta)k_t
             \end{split}
             \end{equation}
-            For Steady state, $p_0=1$,
-            then, 
-            \begin{equation}\label{ssfoc}
+
+For Steady state, \(p_0=1\), then, \begin{equation}\label{ssfoc}
             \begin{split}
                 &c^{\sigma} l^{\eta}=
                 z(1-\alpha)k^{\alpha}l^{-\alpha}/\chi\\
@@ -185,17 +195,12 @@
                 1/\beta -1 +\delta\\
                 &c=zk^{\alpha}l^{1-\alpha}-\delta k
             \end{split}
-            \end{equation}  
-
-            \begin{equation*}
+            \end{equation}\\
+\begin{equation*}
                 M=\frac{k}{l}=\left(\frac{z\alpha \beta}{1-\beta +\beta \delta}\right)^{\frac{1}{1-\alpha}},
-            \end{equation*}
-
-            \begin{equation*}
+            \end{equation*} \begin{equation*}
                 N=\frac{c}{l}=z(\frac{k}{l})^{\alpha}-\delta \frac{k}{l}=zM^{\alpha}-\delta M,
-            \end{equation*}
-
-            \begin{equation*}
+            \end{equation*} \begin{equation*}
             \begin{split}
                 (lN)^{\sigma}l^{\eta}=&
                 z(1-\alpha)(\frac{k}{l})^{\alpha}/\chi\Rightarrow\\
@@ -203,8 +208,8 @@
                 l_{ss}=&\left(\frac{z(1-\alpha)M^{\alpha}}{\chi N^{\sigma}}\right)^{\frac{1}{\sigma+\eta}},
             \end{split}
             \end{equation*}
-            Then,
-            \begin{equation*}
+
+Then, \begin{equation*}
             \begin{split}
                 k_{ss}=&Ml\\
                 c_{ss}=&Nl\\
@@ -213,9 +218,12 @@
                 w_{ss}=&(1-\alpha)zk^{\alpha}l^{\alpha}=(1-\alpha)zM^{\alpha}.
             \end{split}
             \end{equation*}
-        \subsection{Social planner problem}
-            The problem of the social planner is that, given the initial capital $k_0$,
-            \begin{equation}\label{SPP1}
+
+\hypertarget{social-planner-problem}{%
+\subsection{Social planner problem}\label{social-planner-problem}}
+
+The problem of the social planner is that, given the initial capital
+\(k_0\), \begin{equation}\label{SPP1}
                 \begin{split}
                     w( k_0)&=\max_{\{c_t, k_t, l_t \}_{t=0}^{\infty}}
                     \sum_{t=0}^{\infty}
@@ -225,15 +233,15 @@
                     k_0&\text{ is given.}
                 \end{split}
             \end{equation}
-            Bellman equation,
-            \begin{equation}
+
+Bellman equation, \begin{equation}
                 V(k)=\max_{\begin{smallmatrix}0\leq l\leq 1
                     \\0\leq k'\leq zk^{\alpha}l^{1-\alpha}+(1-\delta)k\end{smallmatrix}}
                     \{\frac{(zk^{\alpha}l^{1-\alpha}+(1-\delta)k-k')^{1-\sigma}}{1-\sigma}-\chi \frac{l^{1+\eta}}{1+\eta}+\beta \mathbb{E}V(k')\}
             \end{equation}
 
 \hypertarget{vfi}{%
-\subsubsection{VFI}\label{vfi}}
+\subsection{VFI}\label{vfi}}
 
 \href{https://github.com/hans-mtz/AdvMacro/blob/master/A2.jl}{Julia
 code: click here.}
@@ -262,5 +270,33 @@ code: click here.}
 
 \caption{HPI-VFI}\label{fig:unnamed-chunk-3}
 \end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.65\linewidth]{Assignment2/graphs/MPB_V} \includegraphics[width=0.65\linewidth]{Assignment2/graphs/MPB_Cap} \includegraphics[width=0.65\linewidth]{Assignment2/graphs/MPB_Euler} 
+
+}
+
+\caption{MPB-VFI}\label{fig:unnamed-chunk-4}
+\end{figure}
+
+\begin{longtable}[]{@{}llll@{}}
+\toprule
+Section & ncalls & time & alloc\tabularnewline
+\midrule
+\endhead
+Plain VFI n\_k=200 & 1 & 7209s & 1709GiB\tabularnewline
+Plain VFI n\_k=50 & 1 & 464s & 107GiB\tabularnewline
+Plain VFI-MPB n\_k=500 & 1 & 236s & 63.3GiB\tabularnewline
+Plain VFI-MPB n\_k=200 & 1 & 79.1s & 20.0GiB\tabularnewline
+Plain VFI n\_k=20 & 1 & 74.0s & 16.4GiB\tabularnewline
+Plain VFI-HPI n\_k=500 & 1 & 59.5s & 15.3GiB\tabularnewline
+Plain VFI-MPB n\_k=50 & 1 & 20.2s & 4.27GiB\tabularnewline
+Plain VFI-HPI n\_k=200 & 1 & 14.3s & 2.70GiB\tabularnewline
+Plain VFI-HPI n\_k=50 & 1 & 3.92s & 261MiB\tabularnewline
+Plain VFI-HPI n\_k=20 & 1 & 3.64s & 82.2MiB\tabularnewline
+Plain VFI-MPB n\_k=20 & 1 & 182ms & 22.3MiB\tabularnewline
+\bottomrule
+\end{longtable}
 
 \end{document}
