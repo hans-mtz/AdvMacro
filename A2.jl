@@ -27,13 +27,10 @@ using IntervalArithmetic, IntervalRootFinding
         z::Float64 = 1    ; # Productivity
         α::Float64 = 1/3  ; # Production function
         β::Float64 = 0.98 ; # Discount factor
-        σ::Float64 = 2
-        η::Float64 = 1
-        δ::Float64 = 1
-        χ::Float64
-        l::Float64
-        M = ((z*α*β)/(1-β+β*δ))^(1/(1-α))
-        N = (z*M^α)-δ*M
+        σ::Float64 = 2 ;
+        η::Float64 = 1 ;
+        δ::Float64 = 1 ;
+        l::Float64 = 0.4 ;
         # VFI Paramters
         max_iter::Int64   = 2000  ; # Maximum number of iterations
         dist_tol::Float64 = 1E-9  ; # Tolerance for distance
@@ -41,42 +38,54 @@ using IntervalArithmetic, IntervalRootFinding
         H_tol::Float64    = 1E-9  ; # Tolerance for policy function iteration
     end
 
+p = Par()
 
+@unpack z, α, β, σ, η, l, δ = p
+global M = ((z*α*β)/(1-β+β*δ))^(1/(1-α))
+global N = z*M^α-δ*M
 
 # Getting the right χ
-function get_me_chi(l,p::Par)
-    @unpack z, α, β, M, N, σ, η = p
-    f(x) = x*(N^σ)*(l^(σ+η))-(z*(1-α)*M^α)
-    chi = find_zero(f, 1E-9)
+function get_me_chi(p::Par)
+    @unpack z, α, β, σ, η, l = p
+    #f(x) = x*(N^σ)*(l^(σ+η))-(z*(1-α)*M^α)
+    chi = (z*(1-α)*M^α)/(l^(σ+η)*N^σ)
     return chi
 end
-    # Allocate paramters to object p for future calling
-chi = get_me_chi(0.4,p)
 
-p = Par(l= 0.4, χ=40.2)
+global χ = get_me_chi(p)
 
 
 
-function get_me_l(k,kp,p::Par)
-    @unpack z, α, β, M, N, σ, η, χ = p
-    f(l) = z*(1-α)*(k^α)/((z*(k^α)*(l^(1-α))-kp)^σ)-χ*(l^(η+α))
-    A = range(0,1;length=200)
-    B = f.(A)
-    index = findmin(B[B.>=0])[2]
+
+
+# function get_me_l(k,kp,p::Par)
+#     @unpack z, α, β, M, N, σ, η, χ = p
+#     f(l) = z*(1-α)*(k^α)/((z*(k^α)*(l^(1-α))-kp)^σ)-χ*(l^(η+α))
+#     A = range(0,1;length=200)
+#     B = f.(A)
+#     index = findmin(B[B.>=0])[2]
+#     l = A[index]
+#     return l
+# end
+#
+# get_me_l(k_grid_20[1],k_grid_20[G_kp_20][1],p)
+
+# Function to find optimal labor
+function get_l(k,kp,p::Par)
+    A = range(0,1;length=100)
+    B = [utility(k,kp,A[i],p) for i in 1:100]
+    index = findmax(B)[2]
     l = A[index]
     return l
 end
-
-get_me_l(k_grid_20[1],k_grid_20[G_kp_20][1],p)
-
 
 # Steady state values (funciton)
 function SS_values(p::Par)
     # This function takes in parameters and provides steady state values
     # Parameters: productivity (z), returns to scale (a) and discount factor (b)
     # Output: values for capital, production, consumption, rental rate, wage
-    @unpack z, α, β, M, N, l = p
-    l_ss = l
+    @unpack z, α, β, l = p
+    l_ss = ((z*(1-α)*M^α)/(χ*N^σ))^(1/(σ+η))
     k_ss = M*l_ss
     c_ss = N*l_ss
     y_ss = z*l_ss*M^α
@@ -117,11 +126,16 @@ end
 
 # Utility function
 function utility(k,kp,l,p::Par)
-    @unpack z, α, χ, η, σ = p
+    @unpack z, α, η, σ = p
     y = (a,b) -> z*(a^α)*b^(1-α)
     c = (a,b,d) -> y(a,b)-d
-    utils = (c(k,l,kp).^(1-σ)/(1-σ))-(χ*l.^(η+1)/(η+1))
+    lb = (l) -> (χ*l.^(η+1)/(η+1))
+    utils = c(k,l,kp).^(1-σ)/(1-σ)-lb(l)
+    if c(k,l,kp)>0
     return utils
+    else
+    return -Inf
+    end
 end
 
 
@@ -219,13 +233,12 @@ end
 
 
     # Euler Equation
-    function Euler_Error(k,kp,kpp,p::Par)
+    function Euler_Error(k,kp,kpp,l,lp,p::Par)
         # Return percentage error in Euler equation
-        @unpack z, α, β, σ, l = p
-        lp = l
-        LHS = 1/((z*k^α*l^(1-α))-kp)^σ
-        RHS = β*α*z*kp^(α-1)*lp^(1-α)/(z*kp^α*lp^(1-α)-kpp)
-        return ((RHS/LHS)-1)*100
+        @unpack z, α, β, σ = p
+        LHS = 1/(z*k^α*l^(1-α)-kp)^σ
+        RHS = β*α*z*kp^(α-1)*lp^(1-α)/(z*kp^α*lp^(1-α)-kpp)^σ
+        return (RHS/LHS-1)*100
     end
 
     # Euler error by number of points in grid
@@ -237,7 +250,9 @@ end
             k   = k_grid[i]
             kp  = k_grid[G_kp[i]]
             kpp = k_grid[G_kp[G_kp[i]]]
-            Euler[i] = Euler_Error(k,kp,kpp,p)
+            l = get_l(k,kp,p)
+            lp = get_l(kp,kpp,p)
+            Euler[i] = Euler_Error(k,kp,kpp,l,lp,p)
         end
         # Return
         return Euler
