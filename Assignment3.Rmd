@@ -1,0 +1,69 @@
+---
+title: "Advanced Macro"
+author: "Hans Martinez"
+date: "`r format(Sys.time(), '%b %d, %Y')`"
+output:
+  html_document: default
+  pdf_document:
+    keep_tex: true
+  bookdown::pdf_document2: default
+subtitle: "Assignment 3"
+---
+
+```{r setup, include=FALSE, cache=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(engine.path = list(
+  julia = '/Applications/Julia-1.5.app/Contents/Resources/julia/bin'
+))
+```
+```{r julia, eval =FALSE, include=FALSE}
+library(JuliaCall)
+julia_home<-julia_setup(JULIA_HOME = "/Applications/Julia-1.5.app/Contents/Resources/julia/bin")
+```
+
+<!-- ```{=latex} -->
+## Interpolation
+
+[Julia code: click here.](https://github.com/hans-mtz/AdvMacro/blob/master/A3.jl)
+
+```{julia, eval=FALSE}
+# Julia code
+# See A3.jl
+
+```
+
+
+```{r, out.width='50%',fig.align='center', fig.cap='Interpolation Newton Log Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('Assignment3/graphs/Newton Log _n_4.png')
+knitr::include_graphics('Assignment3/graphs/Newton Log _n_6.png')
+knitr::include_graphics('Assignment3/graphs/Newton Log _n_11.png')
+knitr::include_graphics('Assignment3/graphs/Newton Log _n_21.png')
+```
+
+```{r, out.width='50%',fig.align='center', fig.cap='Interpolation Newton Root Square Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('Assignment3/graphs/Newton Square _n_4.png')
+knitr::include_graphics('Assignment3/graphs/Newton Square _n_6.png')
+knitr::include_graphics('Assignment3/graphs/Newton Square _n_11.png')
+knitr::include_graphics('Assignment3/graphs/Newton Square _n_21.png')
+```
+
+```{r, out.width='50%',fig.align='center', fig.cap='Interpolation Newton CES sigma 2 Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('Assignment3/graphs/Newton CES σ=2 _n_4.png')
+knitr::include_graphics('Assignment3/graphs/Newton CES σ=2 _n_6.png')
+knitr::include_graphics('Assignment3/graphs/Newton CES σ=2 _n_11.png')
+knitr::include_graphics('Assignment3/graphs/Newton CES σ=2 _n_21.png')
+```
+
+```{r, out.width='50%',fig.align='center', fig.cap='Interpolation Newton CES sigma 5 Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('Assignment3/graphs/Newton CES σ=5 _n_4.png')
+knitr::include_graphics('Assignment3/graphs/Newton CES σ=5 _n_6.png')
+knitr::include_graphics('Assignment3/graphs/Newton CES σ=5 _n_11.png')
+knitr::include_graphics('Assignment3/graphs/Newton CES σ=5 _n_21.png')
+```
+
+```{r, out.width='50%',fig.align='center', fig.cap='Interpolation Newton CES sigma 10 Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('Assignment3/graphs/Newton CES σ=10 _n_4.png')
+knitr::include_graphics('Assignment3/graphs/Newton CES σ=10 _n_6.png')
+knitr::include_graphics('Assignment3/graphs/Newton CES σ=10 _n_11.png')
+knitr::include_graphics('Assignment3/graphs/Newton CES σ=10 _n_21.png')
+```
