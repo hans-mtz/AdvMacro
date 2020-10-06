@@ -161,7 +161,7 @@ end
 # interval [xi; xi+1]; i = 1; :::;m-1; w belongs to, and then evaluates the spline at w using the
 # corresponding cubic polynomial.
 
-function CubicNaturalEval(w,x::Array)
+function CubicNaturalEval(x::Array,y::Array,w)
     m=length(x)
     if w<x[1]||w>x[m]
         return print("error: spline evaluated outside its domain")
@@ -193,7 +193,7 @@ for i in 1:5
         xi = collect(range(0.05,2;length=n)) ; # Collect makes it an array instead of a collection
         yi = funs[i].(xi) # the corresponding y-coordinates
         # Interpolation
-        interp=map(z->newton(xi,yi,z),xax) # Interpolating poly for the data
+        interp=map(z->CubicNaturalEval(xi,yi,z),xax) # Interpolating poly for the data
         # Plot
         gr()
         plot(title="Interpolation $name n=$n - Cubic Spline Natural")
