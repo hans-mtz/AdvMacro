@@ -5,4 +5,4 @@ Assignment 1 : [pdf](https://github.com/py-r-hans/AdvMacro/blob/master/Assignmen
 
 Assignment 2 : [pdf](https://github.com/hans-mtz/AdvMacro/blob/master/Assignment2.pdf) [html](https://rawcdn.githack.com/hans-mtz/AdvMacro/52d42574ccd9a147e89edf8a2bd8d91b8a4c57d2/Assignment2.html)
 
-Assignment 3 : [pdf](https://github.com/hans-mtz/AdvMacro/blob/master/Assignment3.pdf) 
+Assignment 3 : [pdf](https://github.com/hans-mtz/AdvMacro/blob/master/Assignment3.pdf) [html](https://rawcdn.githack.com/hans-mtz/AdvMacro/36916661633d13917d5cc7df46c33bd5987def86/Assignment3.html)
