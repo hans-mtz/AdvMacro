@@ -75,6 +75,9 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Fix footnotes in tables (requires footnote package)
+\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{longtable}}{}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -132,9 +135,76 @@ code: click here.}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{newton-basis-polynomial-interpolation}{%
+\subsubsection{Newton basis polynomial
+interpolation}\label{newton-basis-polynomial-interpolation}}
+
+\begin{longtable}[]{@{}rrrr@{}}
+\toprule
+\begin{minipage}[b]{0.10\columnwidth}\raggedleft
+Function\strut
+\end{minipage} & \begin{minipage}[b]{0.26\columnwidth}\raggedleft
+n=4\strut
+\end{minipage} & \begin{minipage}[b]{0.26\columnwidth}\raggedleft
+n=6\strut
+\end{minipage} & \begin{minipage}[b]{0.26\columnwidth}\raggedleft
+n=11\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.10\columnwidth}\raggedleft
+Log\strut
+\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedleft
+\(0.0009543\)\strut
+\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedleft
+\(9.481 \cdot 10^{-06}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedleft
+\(1.391 \cdot 10^{-11}\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\raggedleft
+Square\strut
+\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedleft
+\(0.001947\)\strut
+\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedleft
+\(1.934 \cdot 10^{-05}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedleft
+\(2.838 \cdot 10^{-11}\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\raggedleft
+CES \(\sigma=2\)\strut
+\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedleft
+\(0.0006884\)\strut
+\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedleft
+\(6.839 \cdot 10^{-06}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedleft
+\(1.003 \cdot 10^{-11}\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\raggedleft
+CES \(\sigma=5\)\strut
+\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedleft
+\(2.151 \cdot 10^{-05}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedleft
+\(2.137 \cdot 10^{-07}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedleft
+\(3.135 \cdot 10^{-13}\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\raggedleft
+CES \(\sigma=10\)\strut
+\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedleft
+\(2.988 \cdot 10^{-07}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedleft
+\(2.968 \cdot 10^{-09}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedleft
+\(4.355 \cdot 10^{-15}\)\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table 1. Upper bound error for polynomial interpolation.
+
 \begin{figure}
 
-{\centering \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton Log _n_4} \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton Log _n_6} \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton Log _n_11} \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton Log _n_21} 
+{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton Log _n_4} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton Log _n_6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton Log _n_11} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton Log _n_21} 
 
 }
 
@@ -143,7 +213,7 @@ code: click here.}
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton Square _n_4} \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton Square _n_6} \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton Square _n_11} \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton Square _n_21} 
+{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton Square _n_4} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton Square _n_6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton Square _n_11} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton Square _n_21} 
 
 }
 
@@ -152,7 +222,7 @@ code: click here.}
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton CES σ=2 _n_4} \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton CES σ=2 _n_6} \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton CES σ=2 _n_11} \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton CES σ=2 _n_21} 
+{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton CES σ=2 _n_4} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton CES σ=2 _n_6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton CES σ=2 _n_11} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton CES σ=2 _n_21} 
 
 }
 
@@ -161,7 +231,7 @@ code: click here.}
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton CES σ=5 _n_4} \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton CES σ=5 _n_6} \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton CES σ=5 _n_11} \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton CES σ=5 _n_21} 
+{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton CES σ=5 _n_4} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton CES σ=5 _n_6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton CES σ=5 _n_11} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton CES σ=5 _n_21} 
 
 }
 
@@ -170,11 +240,59 @@ code: click here.}
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton CES σ=10 _n_4} \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton CES σ=10 _n_6} \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton CES σ=10 _n_11} \includegraphics[width=0.5\linewidth]{Assignment3/graphs/Newton CES σ=10 _n_21} 
+{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton CES σ=10 _n_4} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton CES σ=10 _n_6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton CES σ=10 _n_11} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/Newton CES σ=10 _n_21} 
 
 }
 
 \caption{Interpolation Newton CES sigma 10 Fn}\label{fig:unnamed-chunk-6}
+\end{figure}
+
+\hypertarget{cubic-spline-natural}{%
+\subsubsection{Cubic Spline: Natural}\label{cubic-spline-natural}}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_Log _n_4} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_Log _n_6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_Log _n_11} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_Log _n_21} 
+
+}
+
+\caption{Interpolation Natural Cubic Spline Log Fn}\label{fig:unnamed-chunk-7}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_Square _n_4} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_Square _n_6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_Square _n_11} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_Square _n_21} 
+
+}
+
+\caption{Interpolation Natural Cubic Spline Root Square Fn}\label{fig:unnamed-chunk-8}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_CES σ=2 _n_4} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_CES σ=2 _n_6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_CES σ=2 _n_11} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_CES σ=2 _n_21} 
+
+}
+
+\caption{Interpolation Natural Cubic Spline CES sigma 2 Fn}\label{fig:unnamed-chunk-9}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_CES σ=5 _n_4} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_CES σ=5 _n_6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_CES σ=5 _n_11} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_CES σ=5 _n_21} 
+
+}
+
+\caption{Interpolation Natural Cubic Spline CES sigma 5 Fn}\label{fig:unnamed-chunk-10}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_CES σ=10 _n_4} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_CES σ=10 _n_6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_CES σ=10 _n_11} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment3/graphs/CSN_CES σ=10 _n_21} 
+
+}
+
+\caption{Interpolation Natural Cubic Spline CES sigma 10 Fn}\label{fig:unnamed-chunk-11}
 \end{figure}
 
 \end{document}

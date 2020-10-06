@@ -3,9 +3,9 @@ title: "Advanced Macro"
 author: "Hans Martinez"
 date: "`r format(Sys.time(), '%b %d, %Y')`"
 output:
-  html_document: default
   pdf_document:
     keep_tex: true
+  html_document: default
   bookdown::pdf_document2: default
 subtitle: "Assignment 3"
 ---
@@ -32,38 +32,91 @@ julia_home<-julia_setup(JULIA_HOME = "/Applications/Julia-1.5.app/Contents/Resou
 
 ```
 
+### Newton basis polynomial interpolation
 
-```{r, out.width='50%',fig.align='center', fig.cap='Interpolation Newton Log Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+|        Function |                    n=4 |                    n=6 |                   n=11 |
+| --------:| ----------------------:| ----------------------:| ----------------------:|
+|      Log |            $0.0009543$ | $9.481 \cdot 10^{-06}$ | $1.391 \cdot 10^{-11}$ |
+|   Square |             $0.001947$ | $1.934 \cdot 10^{-05}$ | $2.838 \cdot 10^{-11}$ |
+|  CES $\sigma=2$ |            $0.0006884$ | $6.839 \cdot 10^{-06}$ | $1.003 \cdot 10^{-11}$ |
+|  CES $\sigma=5$ | $2.151 \cdot 10^{-05}$ | $2.137 \cdot 10^{-07}$ | $3.135 \cdot 10^{-13}$ |
+| CES $\sigma=10$ | $2.988 \cdot 10^{-07}$ | $2.968 \cdot 10^{-09}$ | $4.355 \cdot 10^{-15}$ | 
+Table 1. Upper bound error for polynomial interpolation.
+
+```{r, out.width='50%',out.height ='20%',fig.align='center', fig.cap='Interpolation Newton Log Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
 knitr::include_graphics('Assignment3/graphs/Newton Log _n_4.png')
 knitr::include_graphics('Assignment3/graphs/Newton Log _n_6.png')
 knitr::include_graphics('Assignment3/graphs/Newton Log _n_11.png')
 knitr::include_graphics('Assignment3/graphs/Newton Log _n_21.png')
 ```
 
-```{r, out.width='50%',fig.align='center', fig.cap='Interpolation Newton Root Square Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+```{r, out.width='50%',out.height ='20%',fig.align='center', fig.cap='Interpolation Newton Root Square Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
 knitr::include_graphics('Assignment3/graphs/Newton Square _n_4.png')
 knitr::include_graphics('Assignment3/graphs/Newton Square _n_6.png')
 knitr::include_graphics('Assignment3/graphs/Newton Square _n_11.png')
 knitr::include_graphics('Assignment3/graphs/Newton Square _n_21.png')
 ```
 
-```{r, out.width='50%',fig.align='center', fig.cap='Interpolation Newton CES sigma 2 Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+```{r, out.width='50%',out.height ='20%',fig.align='center', fig.cap='Interpolation Newton CES sigma 2 Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
 knitr::include_graphics('Assignment3/graphs/Newton CES σ=2 _n_4.png')
 knitr::include_graphics('Assignment3/graphs/Newton CES σ=2 _n_6.png')
 knitr::include_graphics('Assignment3/graphs/Newton CES σ=2 _n_11.png')
 knitr::include_graphics('Assignment3/graphs/Newton CES σ=2 _n_21.png')
 ```
 
-```{r, out.width='50%',fig.align='center', fig.cap='Interpolation Newton CES sigma 5 Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+```{r, out.width='50%',out.height ='20%',fig.align='center', fig.cap='Interpolation Newton CES sigma 5 Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
 knitr::include_graphics('Assignment3/graphs/Newton CES σ=5 _n_4.png')
 knitr::include_graphics('Assignment3/graphs/Newton CES σ=5 _n_6.png')
 knitr::include_graphics('Assignment3/graphs/Newton CES σ=5 _n_11.png')
 knitr::include_graphics('Assignment3/graphs/Newton CES σ=5 _n_21.png')
 ```
 
-```{r, out.width='50%',fig.align='center', fig.cap='Interpolation Newton CES sigma 10 Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+```{r, out.width='50%',out.height ='20%',fig.align='center', fig.cap='Interpolation Newton CES sigma 10 Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
 knitr::include_graphics('Assignment3/graphs/Newton CES σ=10 _n_4.png')
 knitr::include_graphics('Assignment3/graphs/Newton CES σ=10 _n_6.png')
 knitr::include_graphics('Assignment3/graphs/Newton CES σ=10 _n_11.png')
 knitr::include_graphics('Assignment3/graphs/Newton CES σ=10 _n_21.png')
+```
+
+
+
+
+
+
+### Cubic Spline: Natural
+
+
+```{r, out.width='50%', out.height ='20%',fig.align='center', fig.cap='Interpolation Natural Cubic Spline Log Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics(c('Assignment3/graphs/CSN_Log _n_4.png',
+                          'Assignment3/graphs/CSN_Log _n_6.png',
+                          'Assignment3/graphs/CSN_Log _n_11.png',
+                          'Assignment3/graphs/CSN_Log _n_21.png'))
+```
+
+```{r, out.width='50%',out.height ='20%',fig.align='center', fig.cap='Interpolation Natural Cubic Spline Root Square Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('Assignment3/graphs/CSN_Square _n_4.png')
+knitr::include_graphics('Assignment3/graphs/CSN_Square _n_6.png')
+knitr::include_graphics('Assignment3/graphs/CSN_Square _n_11.png')
+knitr::include_graphics('Assignment3/graphs/CSN_Square _n_21.png')
+```
+
+```{r, out.width='50%',out.height ='20%',fig.align='center', fig.cap='Interpolation Natural Cubic Spline CES sigma 2 Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('Assignment3/graphs/CSN_CES σ=2 _n_4.png')
+knitr::include_graphics('Assignment3/graphs/CSN_CES σ=2 _n_6.png')
+knitr::include_graphics('Assignment3/graphs/CSN_CES σ=2 _n_11.png')
+knitr::include_graphics('Assignment3/graphs/CSN_CES σ=2 _n_21.png')
+```
+
+```{r, out.width='50%',out.height ='20%',fig.align='center', fig.cap='Interpolation Natural Cubic Spline CES sigma 5 Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('Assignment3/graphs/CSN_CES σ=5 _n_4.png')
+knitr::include_graphics('Assignment3/graphs/CSN_CES σ=5 _n_6.png')
+knitr::include_graphics('Assignment3/graphs/CSN_CES σ=5 _n_11.png')
+knitr::include_graphics('Assignment3/graphs/CSN_CES σ=5 _n_21.png')
+```
+
+```{r, out.width='50%',out.height ='20%',fig.align='center', fig.cap='Interpolation Natural Cubic Spline CES sigma 10 Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('Assignment3/graphs/CSN_CES σ=10 _n_4.png')
+knitr::include_graphics('Assignment3/graphs/CSN_CES σ=10 _n_6.png')
+knitr::include_graphics('Assignment3/graphs/CSN_CES σ=10 _n_11.png')
+knitr::include_graphics('Assignment3/graphs/CSN_CES σ=10 _n_21.png')
 ```
