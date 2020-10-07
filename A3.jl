@@ -1,7 +1,7 @@
 # setting working directory
 # cd("/Volumes/SSD Hans/Github/MacroFall2020/AdvMacro")
 # mkpath("Assignment3")
-#cd("/Volumes/SSD Hans/Github/MacroFall2020/AdvMacro/Assignment3")
+cd("/Volumes/SSD Hans/Github/MacroFall2020/AdvMacro/Assignment3")
 # mkpath("graphs")
 using Plots
 # using LateXStrings # Pkg.add("LaTeXStrings") # https://github.com/stevengj/LaTeXStrings.jl
@@ -9,7 +9,7 @@ using Dierckx # Pkg.add("Dierckx") # https://github.com/kbarbary/Dierckx.jl
 using Interpolations # Pkg.add("Interpolations") # https://github.com/JuliaMath/Interpolations.jl
 # Pkg.add("ForwardDiff")
 using ForwardDiff # Pkg.add("ForwardDiff") # https://github.com/JuliaDiff/ForwardDiff.jl
-Pkg.add("LaTeXStrings")
+#Pkg.add("LaTeXStrings")
 using LaTeXStrings
 using Latexify
 
@@ -26,6 +26,9 @@ u6(x) = u3(x,10)
 u1p(x) = 1/x
 u2p(x) = (1/2)*x^(-1/2)
 u3p(x,s) = x^(-s)
+u4p(x) = x^(-2)
+u5p(x) = x^(-5)
+u6p(x) = x^(-10)
 
 xax = range(0.05,2;length=1000)
 
@@ -201,5 +204,92 @@ for i in 1:5
         plot!(xax,interp,linewidth=3,label="Interpolation")
         plot!(xi,yi,linetype=:scatter,marker=(:diamond,9),markercolor=RGB(0.5,0.1,0.1),label = "Data")
         savefig("graphs/CSN_$name _n_$n")
+    end
+end
+
+## Schumaker shape preserving Spline
+
+##find_xi funtion that takes in x and y coordinates
+##and slopes at each xi and returns the ξ parameter
+function find_xi(t::Array,z::Array,s::Array)
+    #Based on Algorithm Tudd pag 233
+    n = length(t)
+    δ = [(z[i+1]-z[i])/(t[i+1]-t[i]) for i in 1:(n-1)]
+    ξ = zeros(n-1)
+    #Check i lemma 6.11.1
+    for i in 1:(n-1)
+        if (s[i] + s[i+1])*1/2 == δ[i]
+            ξ[i] = t[i+1]
+        elseif (s[i]-δ[i])*(s[i+1]-δ[i]) ≥ 0
+            ξ[i] = (t[i]+t[i+1])/2
+        elseif abs(s[i+1]-δ[i]) < abs(s[i]-δ[i])
+            ξub = t[i]+ (2*(t[i+1]-t[i])*(s[i+1]-δ[i]))/(s[i+1]-s[i])
+            ξ[i] = (t[i]+ξub)/2
+        elseif abs(s[i+1]-δ[i]) ≥ abs(s[i]-δ[i])
+            ξlb = t[i+1]+ (2*(t[i+1]-t[i])*(s[i]-δ[i]))/(s[i+1]-s[i])
+            ξ[i] = (t[i+1]+ξlb)/2
+        else
+            println("What?!")
+        end
+    end
+    return ξ
+end
+
+#Schumaker takes in x, y coordinates, slopes
+
+function Schumaker(t::Array,z::Array,s::Array,w)
+    m=length(t)
+    if w<t[1]||w>t[m]
+        return print("error: spline evaluated outside its domain")
+    end
+    n=m-1
+    ξ = find_xi(t,z,s)
+    i = 1
+    for j in 1:n
+        if w<=t[j+1]
+            break
+        else
+            i=i+1
+        end
+    end
+    α = ξ[i]-t[i]
+    β = t[i+1]-ξ[i]
+    sb = (2*(z[i+1]-z[i])-(α*s[i]+β*s[i+1]))/(t[i+1]-t[i])
+    A1, B1, C1 = z[i], s[i], (sb-s[i])/2*α
+    A2, B2, C2 = A1 + α*B1 + C1*α^2, sb, (s[i+1]-sb)/(2*β)
+    if w ≤ ξ[i]
+        w_t = A1 + B1*(w - t[i]) + C1*(w-t[i+1])^2
+    else
+        w_t = A2 + B2*(w - ξ[i]) + C2*(w-ξ[i])^2
+    end
+    return w_t
+end
+
+xi = [0.05,0.10]
+yi = u1.(xi)
+si = u1p.(xi)
+
+Schumaker(xi,yi,si,0.075)
+
+nom = ["Log","Square","CES σ=2", "CES σ=5", "CES σ=10"]
+funs = [u1,u2,u4,u5,u6]
+slopes = [u1p,u2p,u4p,u5p,u6p]
+for i in 1:5
+    name = nom[i]
+    for n = (4,6,11,21)
+        fn = funs[i].(xax)
+        # Grid of nodes for interpolation
+        xi = collect(range(0.05,2;length=n)) ; # Collect makes it an array instead of a collection
+        yi = funs[i].(xi) # the corresponding y-coordinates
+        si = slopes[i].(xi) #the corresponding slopes
+        # Interpolation
+        interp=map(z->Schumaker(xi,yi,si,z),xax) # Interpolating poly for the data
+        # Plot
+        gr()
+        plot(title="Interpolation $name n=$n - Schumaker Shape Preserving Spline")
+        plot!(xax,fn,linewidth=3,label = "Function: $name",legend=(0.75,0.75),foreground_color_legend = nothing,background_color_legend = nothing)
+        plot!(xax,interp,linewidth=3,label="Interpolation")
+        plot!(xi,yi,linetype=:scatter,marker=(:diamond,9),markercolor=RGB(0.5,0.1,0.1),label = "Data")
+        savefig("graphs/Schu_$name _n_$n")
     end
 end

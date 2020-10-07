@@ -3,9 +3,9 @@ title: "Advanced Macro"
 author: "Hans Martinez"
 date: "`r format(Sys.time(), '%b %d, %Y')`"
 output:
+  html_document: default
   pdf_document:
     keep_tex: true
-  html_document: default
   bookdown::pdf_document2: default
 subtitle: "Assignment 3"
 ---
@@ -22,7 +22,7 @@ julia_home<-julia_setup(JULIA_HOME = "/Applications/Julia-1.5.app/Contents/Resou
 ```
 
 <!-- ```{=latex} -->
-## Interpolation
+# Interpolation
 
 [Julia code: click here.](https://github.com/hans-mtz/AdvMacro/blob/master/A3.jl)
 
@@ -32,7 +32,45 @@ julia_home<-julia_setup(JULIA_HOME = "/Applications/Julia-1.5.app/Contents/Resou
 
 ```
 
-### Newton basis polynomial interpolation
+## Schumaker Shape Preserving Spline
+
+```{r, out.width='50%', out.height ='20%',fig.align='center', fig.cap='Interpolation Schumaker Shape Preserving Spline Log Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics(c('Assignment3/graphs/Schu_Log _n_4.png',
+                          'Assignment3/graphs/Schu_Log _n_6.png',
+                          'Assignment3/graphs/Schu_Log _n_11.png',
+                          'Assignment3/graphs/Schu_Log _n_21.png'))
+```
+
+```{r, out.width='50%',out.height ='20%',fig.align='center', fig.cap='Interpolation Schumaker Shape Preserving Spline Root Square Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('Assignment3/graphs/Schu_Square _n_4.png')
+knitr::include_graphics('Assignment3/graphs/Schu_Square _n_6.png')
+knitr::include_graphics('Assignment3/graphs/Schu_Square _n_11.png')
+knitr::include_graphics('Assignment3/graphs/Schu_Square _n_21.png')
+```
+
+```{r, out.width='50%',out.height ='20%',fig.align='center', fig.cap='Interpolation Schumaker Shape Preserving Spline CES sigma 2 Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('Assignment3/graphs/Schu_CES σ=2 _n_4.png')
+knitr::include_graphics('Assignment3/graphs/Schu_CES σ=2 _n_6.png')
+knitr::include_graphics('Assignment3/graphs/Schu_CES σ=2 _n_11.png')
+knitr::include_graphics('Assignment3/graphs/Schu_CES σ=2 _n_21.png')
+```
+
+```{r, out.width='50%',out.height ='20%',fig.align='center', fig.cap='Interpolation Schumaker Shape Preserving Spline CES sigma 5 Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('Assignment3/graphs/Schu_CES σ=5 _n_4.png')
+knitr::include_graphics('Assignment3/graphs/Schu_CES σ=5 _n_6.png')
+knitr::include_graphics('Assignment3/graphs/Schu_CES σ=5 _n_11.png')
+knitr::include_graphics('Assignment3/graphs/Schu_CES σ=5 _n_21.png')
+```
+
+```{r, out.width='50%',out.height ='20%',fig.align='center', fig.cap='Interpolation Schumaker Shape Preserving Spline CES sigma 10 Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics('Assignment3/graphs/Schu_CES σ=10 _n_4.png')
+knitr::include_graphics('Assignment3/graphs/Schu_CES σ=10 _n_6.png')
+knitr::include_graphics('Assignment3/graphs/Schu_CES σ=10 _n_11.png')
+knitr::include_graphics('Assignment3/graphs/Schu_CES σ=10 _n_21.png')
+```
+
+\newpage
+## Newton basis polynomial interpolation
 
 |        Function |                    n=4 |                    n=6 |                   n=11 |
 | --------:| ----------------------:| ----------------------:| ----------------------:|
@@ -79,11 +117,7 @@ knitr::include_graphics('Assignment3/graphs/Newton CES σ=10 _n_21.png')
 ```
 
 
-
-
-
-
-### Cubic Spline: Natural
+## Cubic Spline: Natural
 
 
 ```{r, out.width='50%', out.height ='20%',fig.align='center', fig.cap='Interpolation Natural Cubic Spline Log Fn', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
@@ -120,3 +154,4 @@ knitr::include_graphics('Assignment3/graphs/CSN_CES σ=10 _n_6.png')
 knitr::include_graphics('Assignment3/graphs/CSN_CES σ=10 _n_11.png')
 knitr::include_graphics('Assignment3/graphs/CSN_CES σ=10 _n_21.png')
 ```
+
