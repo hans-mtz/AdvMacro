@@ -15,6 +15,8 @@ Pkg.add("LaTeXStrings")
 using LaTeXStrings
 Pkg.add("Latexify")
 using Latexify
+Pkg.add("PyPlot")
+
 
 cd("/Volumes/SSD Hans/Github/MacroFall2020/AdvMacro/Assignment3")
 
@@ -109,7 +111,8 @@ err=[poly_inter_err.(0.05,2,i,funs) for i in [4,6,11]]
 Err=[err[1] err[2] err[3]]
 
 copy_to_clipboard(true)
-mdtable(Err, side=nom, head=["n=4","n=6","n=11"],fmt = FancyNumberFormatter(4))
+mdtable(Err, side=nom, head=["n=4","n=6","n=11"],fmt = FancyNumberFormatter(4))|> print
+mdtable(Err, side=nom, head=["n=4","n=6","n=11"],fmt = FancyNumberFormatter(4))|> display
 
 ## Cubic Splines - Natural
 
@@ -296,7 +299,7 @@ end
 # find_xi(xi,yi,si)
 # Schumaker(xi,yi,si,0.075)
 
-nom = ["Log","Square","CES σ=2", "CES σ=5", "CES σ=10"]
+nom = ["Log","Square Root","CES σ=2", "CES σ=5", "CES σ=10"]
 funs = [u1,u2,u4,u5,u6]
 slopes = [u1p,u2p,u4p,u5p,u6p]
 for i in 1:5
@@ -318,3 +321,232 @@ for i in 1:5
         savefig("graphs/Schu_$name _n_$n")
     end
 end
+
+## graphs
+##
+fnom = ["Log","Square Root","CES "*latexinline("σ=2"), "CES "*latexinline("σ=5"), "CES "*latexinline("σ=10")]
+funs = [u1,u2,u4,u5,u6]
+slopes = [u1p,u2p,u4p,u5p,u6p]
+method = [newton, CubicNaturalEval, Schumaker]
+gridpts = [4,6,11,21]
+nom = ["Log","SQR","CES_2", "CES_5", "CES_10"]
+titlenom = ["Log","Square Root","CES σ=2", "CES σ=5", "CES σ=10"]
+#titlenom = ["Log_n=6","Square_Root n=6","CES σ=2 n=6", "CES σ=5 n=6", "CES σ=10 n=6"]
+for i in 1:length(funs)
+    plotname = nom[i]
+    title = titlenom[i]
+    name = fnom[i]
+    fn = funs[i].(xax)
+    IE = Array{Float64}(undef, 3, 4)
+    local interp = Array{Float64}(undef,1000,3)
+    for n = gridpts
+        for j in 1:length(method)
+            met = method[j]
+            # Grid of nodes for interpolation
+            global xi = collect(range(0.05,2;length=n)) ; # Collect makes it an array instead of a collection
+            global yi = funs[i].(xi) # the corresponding y-coordinates
+            # Interpolation
+            if j ≤ 2
+                global interp[:,j] = map(z->method[j](xi,yi,z)[1],xax)
+            else
+                global si = slopes[i].(xi) #the corresponding slopes
+                global interp[:,j]=map(z->Schumaker(xi,yi,si,z)[1],xax) # Interpolating poly for the data
+            end
+            #IE[j,n] = interp_err_SN(fn,interp)
+            #IE[j,n] = sqrt(sum((fn .- interp).^2))
+        end
+        global fmet = ["$name","Newton Basis Polynomials","Natural Cubic Splines","Shape-preserving Schumaker Splines"]
+        # Plot
+        gr()
+        plot(title="Interpolation $title Grid size n=$n")
+        plot!(xax,fn,linewidth=3,label = "Function: $title",legend=:bottomright,foreground_color_legend = nothing,background_color_legend = nothing)
+        plot!(xax,interp[:,1],linewidth=3,label=fmet[2], linestyle=:dash)
+        plot!(xax,interp[:,2],linewidth=3,label=fmet[3],linestyle=:dot)
+        plot!(xax,interp[:,3],linewidth=3,label=fmet[4], linestyle=:dashdot)
+        plot!(xi,yi,linetype=:scatter,marker=(:circle,6),markercolor=:blue,label = "Data")
+        savefig("graphs/$plotname $n.png")
+    end
+end
+
+
+## Errors
+##
+
+fnom = ["Log","Square Root","CES "*latexinline("σ=2"), "CES "*latexinline("σ=5"), "CES "*latexinline("σ=10")]
+funs = [u1,u2,u4,u5,u6]
+slopes = [u1p,u2p,u4p,u5p,u6p]
+method = [newton, CubicNaturalEval, Schumaker]
+gridpts = [4,6,11,21]
+nom = ["Log","SQR","CES_2", "CES_5", "CES_10"]
+titlenom = ["Log","Square Root","CES σ=2", "CES σ=5", "CES σ=10"]
+for i in 1:length(funs)
+    plotname = nom[i]
+    title = titlenom[i]
+    name = fnom[i]
+    fn = funs[i].(xax)
+    IE = Array{Float64}(undef, 3, 4)
+    for j in 1:length(method)
+        for n in 1:length(gridpts)
+            # Grid of nodes for interpolation
+            global xi = collect(range(0.05,2;length=gridpts[n])) ; # Collect makes it an array instead of a collection
+            global yi = funs[i].(xi) # the corresponding y-coordinates
+            # Interpolation
+            if j ≤ 2
+                global interp = map(z->method[j](xi,yi,z)[1],xax)
+            else
+                global si = slopes[i].(xi) #the corresponding slopes
+                global interp=map(z->Schumaker(xi,yi,si,z)[1],xax) # Interpolating poly for the data
+            end
+            IE[j,n] = sqrt(sum((fn .- interp).^2))
+        end
+    end
+    global fmet = ["$name","Newton Basis Polynomials","Natural Cubic Splines","Shape-preserving Schumaker Splines"]
+    mdtable(IE, side=fmet, head=["n=4","n=6","n=11","n=21"],fmt = FancyNumberFormatter(4))|> print
+    # Plot
+    gr()
+    plot(title=title)
+    plot!(gridpts,IE[1,:],linewidth=3,label = fmet[2], yscale=:log10, legend=:topright,foreground_color_legend = nothing,background_color_legend = nothing)
+    plot!(gridpts,IE[2,:],linewidth=3,label = fmet[3], yscale=:log10)
+    plot!(gridpts,IE[3,:],linewidth=3,label = fmet[4], yscale=:log10)
+    savefig("graphs/IntError_$plotname")
+end
+
+
+## Grid spacing
+##
+
+# # No need for ScaledInterpolations if not using PolyRange
+#grid = range(0,1,length=n)
+# grid = a + (b-a)*grid^θ PolYnomial scaling
+# a = 0.01, b = 0.5, θ = 2, interval = [0,1], number of points = 6
+#    ci = 0.01 .+ (0.50-0.01).*range(0,1;length=6).^2
+
+function polygrid(n::Integer,a::Float64,b::Float64,θ::Float64)
+    grid = collect(range(0,1; length=n))
+    xi = a .+ (b-a).*grid.^θ
+    return xi
+end
+
+polygrid(6,0.05,2.0,2.0)
+
+function interp_err_SN(F::Array,I::Array)
+    error = maximum(abs.(I.-F))/maximum(abs.(F))
+end
+
+maximum(abs.(interp.-u1.(xax)))/maximum(abs.(u1.(xax)))
+
+interp_err_SN(u1.(xax),interp)
+
+fnom = ["Log","Square Root","CES "*latexinline("σ=2"), "CES "*latexinline("σ=5"), "CES "*latexinline("σ=10")]
+funs = [u1,u2,u4,u5,u6]
+slopes = [u1p,u2p,u4p,u5p,u6p]
+method = [newton, CubicNaturalEval, Schumaker]
+curvature = [1.0,2.0,3.0,4.0]
+nom = ["Log","SQR","CES_2", "CES_5", "CES_10"]
+titlenom = ["Log","Square Root","CES σ=2", "CES σ=5", "CES σ=10"]
+#titlenom = ["Log_n=6","Square_Root n=6","CES σ=2 n=6", "CES σ=5 n=6", "CES σ=10 n=6"]
+for i in 1:length(funs)
+    plotname = nom[i]
+    title = titlenom[i]
+    name = fnom[i]
+    fn = funs[i].(xax)
+    IE = Array{Float64}(undef, 3, 4)
+    for j in 1:length(method)
+        met = method[j]
+        for n in 1:length(curvature)
+            curv = curvature[n]
+            # Grid of nodes for interpolation
+            global xi = polygrid(6,0.05,2.0,curvature[n]) ; # Collect makes it an array instead of a collection
+            global yi = funs[i].(xi) # the corresponding y-coordinates
+            # Interpolation
+            if j ≤ 2
+                global interp = map(z->method[j](xi,yi,z)[1],xax)
+            else
+                global si = slopes[i].(xi) #the corresponding slopes
+                global interp=map(z->Schumaker(xi,yi,si,z)[1],xax) # Interpolating poly for the data
+            end
+            #IE[j,n] = interp_err_SN(fn,interp)
+            IE[j,n] = sqrt(sum((fn .- interp).^2))
+        end
+    end
+    global fmet = ["$name","Newton Basis Polynomials","Natural Cubic Splines","Shape-preserving Schumaker Splines"]
+    mdtable(IE, side=fmet, head=latexinline(["θ=1","θ=2","θ=3","θ=4"]),fmt = FancyNumberFormatter(4))|> print
+    # Plot
+    gr()
+    #pyplot()
+    plot(title=title, xticks=curvature)
+    plot!(curvature,IE[1,:],linewidth=3,label = fmet[2], yscale=:log10,  legend=:topleft,foreground_color_legend = nothing,background_color_legend = nothing)
+    plot!(curvature,IE[2,:],linewidth=3,label = fmet[3],yscale=:log10,)
+    plot!(curvature,IE[3,:],linewidth=3,label = fmet[4],yscale=:log10,)
+    xlabel!("Curvature")
+    savefig("graphs/IntError_Curv_$plotname")
+end
+
+
+fnom = ["Log","Square Root","CES "*latexinline("σ=2"), "CES "*latexinline("σ=5"), "CES "*latexinline("σ=10")]
+funs = [u1,u2,u4,u5,u6]
+slopes = [u1p,u2p,u4p,u5p,u6p]
+method = [newton, CubicNaturalEval, Schumaker]
+curvature = [1.0,1.5,2.0,3.0]
+nom = ["Log","SQR","CES_2", "CES_5", "CES_10"]
+titlenom = ["Log","Square Root","CES σ=2", "CES σ=5", "CES σ=10"]
+#titlenom = ["Log_n=6","Square_Root n=6","CES σ=2 n=6", "CES σ=5 n=6", "CES σ=10 n=6"]
+for i in 1:length(funs)
+    plotname = nom[i]
+    title = titlenom[i]
+    name = fnom[i]
+    fn = funs[i].(xax)
+    IE = Array{Float64}(undef, 3, 4)
+    local interp = Array{Float64}(undef,1000,3)
+    for n in 1:length(curvature)
+        curv = curvature[n]
+        for j in 1:length(method)
+            met = method[j]
+            # Grid of nodes for interpolation
+            global xi = polygrid(6,0.05,2.0,curvature[n]) ; # Collect makes it an array instead of a collection
+            global yi = funs[i].(xi) # the corresponding y-coordinates
+            # Interpolation
+            if j ≤ 2
+                global interp[:,j] = map(z->method[j](xi,yi,z)[1],xax)
+            else
+                global si = slopes[i].(xi) #the corresponding slopes
+                global interp[:,j]=map(z->Schumaker(xi,yi,si,z)[1],xax) # Interpolating poly for the data
+            end
+            #IE[j,n] = interp_err_SN(fn,interp)
+            #IE[j,n] = sqrt(sum((fn .- interp).^2))
+        end
+        global fmet = ["$name","Newton Basis Polynomials","Natural Cubic Splines","Shape-preserving Schumaker Splines"]
+        # Plot
+        gr()
+        plot(title="Interpolation n=6 - $title, θ=$curv")
+        plot!(log.(xax),fn,linewidth=3,label = "Function: $title",legend=:bottomright,foreground_color_legend = nothing,background_color_legend = nothing)
+        plot!(log.(xax),interp[:,1],linewidth=3,label=fmet[2], linestyle=:dash)
+        plot!(log.(xax),interp[:,2],linewidth=3,label=fmet[3],linestyle=:dot)
+        plot!(log.(xax),interp[:,3],linewidth=3,label=fmet[4], linestyle=:dashdot)
+        plot!(log.(xi),yi,linetype=:scatter,marker=(:circle,6),markercolor=:blue,label = "Data")
+        savefig("graphs/$plotname $curv.png")
+    end
+
+    # mdtable(IE, side=fmet, head=latexinline(["θ=1","θ=2","θ=3","θ=4"]),fmt = FancyNumberFormatter(4))|> print
+    # # Plot
+    # gr()
+    # #pyplot()
+    # plot(title=title, xticks=curvature)
+    # plot!(curvature,IE[1,:],linewidth=3,label = fmet[2], yscale=:log10,  legend=:topleft,foreground_color_legend = nothing,background_color_legend = nothing)
+    # plot!(curvature,IE[2,:],linewidth=3,label = fmet[3],yscale=:log10,)
+    # plot!(curvature,IE[3,:],linewidth=3,label = fmet[4],yscale=:log10,)
+    # xlabel!("Curvature")
+    # savefig("graphs/IntError_Curv_$plotname")
+end
+
+
+
+
+# function curv(n::Float64,a::Float64,b::Float64,F::function,T::function)
+#     error = 1.0
+#     θ = 1
+#     xi = polygrid(n,a,b,θ)
+#     yi = F.(xi)
+#     fn = F.(xax)
+#     interp = map(z->T(xi,yi,z),xax)
+#     while error > 10E-5
