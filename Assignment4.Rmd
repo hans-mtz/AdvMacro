@@ -3,9 +3,9 @@ title: "Advanced Macro"
 author: "Hans Martinez"
 date: "`r format(Sys.time(), '%b %d, %Y')`"
 output:
-  html_document: default
   pdf_document:
     keep_tex: true
+  html_document: default
   bookdown::pdf_document2: default
 subtitle: "Assignment 4"
 ---
@@ -32,9 +32,11 @@ julia_home<-julia_setup(JULIA_HOME = "/Applications/Julia-1.5.app/Contents/Resou
 
 ```
 
-Currently, Bellman not converging when trying to pick (k',l) simultaneously. I will try the following:
+Nested optimization. 
 
-- Try providing gradient and/or hessian
-- Try bracketing optimization
-- Try first solving for l, then k'
-
+```{r, out.width='50%', out.height ='20%',fig.align='center', fig.cap='Nested Interpolation', echo=FALSE, fig.show='hold', fig.path = '../graphs/'}
+knitr::include_graphics(c('Assignment4/VFI_univariate_max_Euler_20_3.6.png',
+                          'Assignment4/VFI_univariate_max_G_kp_20_3.6.png',
+                          'Assignment4/VFI_univariate_max_G_l_20_3.6.png',
+                          'Assignment4/VFI_univariate_max_V_20_3.6.png'))
+```

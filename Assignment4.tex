@@ -114,7 +114,7 @@
 \providecommand{\subtitle}[1]{}
 \subtitle{Assignment 4}
 \author{Hans Martinez}
-\date{Oct 14, 2020}
+\date{Oct 17, 2020}
 
 \begin{document}
 \maketitle
@@ -132,17 +132,15 @@ code: click here.}
 \end{Highlighting}
 \end{Shaded}
 
-Currently, Bellman not converging when trying to pick (k',l)
-simultaneously. I will try the following:
+Nested optimization.
 
-\begin{itemize}
-\tightlist
-\item
-  Try providing gradient and/or hessian
-\item
-  Try bracketing optimization
-\item
-  Try first solving for l, then k'
-\end{itemize}
+\begin{figure}
+
+{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment4/VFI_univariate_max_Euler_20_3.6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment4/VFI_univariate_max_G_kp_20_3.6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment4/VFI_univariate_max_G_l_20_3.6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment4/VFI_univariate_max_V_20_3.6} 
+
+}
+
+\caption{Nested Interpolation}\label{fig:unnamed-chunk-2}
+\end{figure}
 
 \end{document}
