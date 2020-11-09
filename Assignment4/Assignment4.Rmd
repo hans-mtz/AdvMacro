@@ -1,0 +1,61 @@
+---
+title: "Advanced Macro"
+author: "Hans Martinez"
+date: "`r format(Sys.time(), '%b %d, %Y')`"
+output:
+  pdf_document:
+    keep_tex: true
+  html_document: default
+  bookdown::pdf_document2: default
+subtitle: "Assignment 4"
+---
+
+```{r setup, include=FALSE, cache=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(engine.path = list(
+  julia = '/Applications/Julia-1.5.app/Contents/Resources/julia/bin'
+))
+```
+```{r julia, eval =FALSE, include=FALSE}
+library(JuliaCall)
+julia_home<-julia_setup(JULIA_HOME = "/Applications/Julia-1.5.app/Contents/Resources/julia/bin")
+```
+
+<!-- ```{=latex} -->
+# Optimization
+
+
+
+[Julia code: click here.](https://github.com/hans-mtz/AdvMacro/blob/master/A4.jl)
+
+```{julia, eval=FALSE}
+# Julia code
+# See A4.jl
+
+```
+
+### Direct maximization over a pair of variables.
+
+```{r, out.width='50%', out.height ='20%',fig.align='center', fig.cap='Multivariate maximization', echo=FALSE, fig.show='hold'}
+knitr::include_graphics(c('Figures/VFI_mvariate_max_Euler_20_4.0.png',
+                          'Figures/VFI_mvariate_max_G_kp_20_4.0.png',
+                          'Figures/VFI_mvariate_max_G_l_20_4.0.png',
+                          'Figures/VFI_mvariate_max_V_20_4.0.png'))
+```
+
+### Direct maximization over a single variable with other variables soved for analytically.
+
+```{r, out.width='50%', out.height ='20%',fig.align='center', fig.cap='Univariate maximization', echo=FALSE, fig.show='hold'}
+knitr::include_graphics(c('Figures/VFI_univariate_max_Euler_20_4.0.png',
+                          'Figures/VFI_univariate_max_G_kp_20_4.0.png',
+                          'Figures/VFI_univariate_max_G_l_20_4.0.png',
+                          'Figures/VFI_univariate_max_V_20_4.0.png'))
+
+```
+
+
+
+ Section                        | ncalls  |   time |  %tot |    avg |    alloc |  %tot |     avg
+ -------------------------------|---------|--------|------|---------|----------|--------|-------
+ Monovariate VFI n_k=20 $\theta$_k=4   |      1  |  23.0s | 56.9% |  23.0s |  1.66GiB | 50.9% | 1.66GiB
+ Multivariate VFI n_k=20 $\theta$_k=4  |      1  |  17.4s | 43.1% |  17.4s |  1.60GiB | 49.1% | 1.60GiB

@@ -131,6 +131,56 @@ using Parameters # Pkg.add("Parameters") # https://github.com/mauro3/Parameter
     # global N = z*M^α-δ*M
     # # Getting the right χ for l_ss= 0.4
     # global χ = (z*(1-α)*M^α)/(l^(σ+η)*N^σ)
+## Grid
+    function Make_K_Grid(n_k,θ_k,p::Par,scale_type="Poly")
+        # Get SS
+        k_ss,y_ss,c_ss,r_ss,w_ss = SS_values(p)
+        # Get k_grid
+        if θ_k≠1
+            if scale_type=="Poly"
+            k_grid = PolyRange(1E-5,2*k_ss;θ=θ_k,N=n_k) ; # Curved grid between 0 and 2*k_ss
+            elseif scale_type=="Exp"
+            # k_grid = ExpRange(1E-5,2*k_ss;θ=θ_k,N=n_k) ; # Curved grid between 0 and 2*k_ss
+            else
+            error("scale_type must be either Poly or Exp")
+            end
+        else
+        k_grid = range(1E-5,2*k_ss,length=n_k)
+        end
+        # Return
+        return k_grid
+    end
+
+## Model Parameters
+
+# Generate structure of model objects
+    @with_kw struct Model
+        # Parameters
+        p::Par = Par() # Model paramters in their own structure
+        # Grids
+        θ_k::Float64    = 1     # Curvature of k_grid
+        n_k::Int64      = 20    # Size of k_grid
+        n_k_fine::Int64 = 1000  # Size of fine grid for interpolation
+        k_grid          = Make_K_Grid(n_k,θ_k,p)    # k_grid for model solution
+        k_grid_fine     = Make_K_Grid(n_k_fine,1,p) # Fine grid for interpolation
+        # Value and policy functions
+        V         = Array{Float64}(undef,n_k)       # Value Function
+        G_kp      = Array{Float64}(undef,n_k)       # Policy Function
+        G_c       = Array{Float64}(undef,n_k)       # Policy Function
+        G_l       = Array{Float64}(undef,n_k)       # Policy Function
+        V_fine    = Array{Float64}(undef,n_k_fine)  # Value Function on fine grid
+        G_kp_fine = Array{Float64}(undef,n_k_fine)  # Policy Function on fine grid
+        G_c_fine  = Array{Float64}(undef,n_k_fine)  # Policy Function on fine grid
+        G_l_fine  = Array{Float64}(undef,n_k_fine)  # Policy Function on fine grid
+        # Anaytical Solutions
+        V_a       = Array{Float64}(undef,n_k_fine)  # Analytical Value Function on fine grid
+        G_kp_a    = Array{Float64}(undef,n_k_fine)  # Analytical Policy Function on fine grid
+        G_c_a     = Array{Float64}(undef,n_k_fine)  # Analytical Policy Function on fine grid
+        Euler     = Array{Float64}(undef,n_k_fine)  # Errors in Euler equation
+    end
+
+    M = Model()
+
 
 ## Utility function
 
@@ -214,55 +264,6 @@ using Parameters # Pkg.add("Parameters") # https://github.com/mauro3/Parameter
         return wage, int, cons, labor, output
     end
 
-## Grid
-    function Make_K_Grid(n_k,θ_k,p::Par,scale_type="Poly")
-        # Get SS
-        k_ss,y_ss,c_ss,r_ss,w_ss = SS_values(p)
-        # Get k_grid
-        if θ_k≠1
-            if scale_type=="Poly"
-            k_grid = PolyRange(1E-5,2*k_ss;θ=θ_k,N=n_k) ; # Curved grid between 0 and 2*k_ss
-            elseif scale_type=="Exp"
-            # k_grid = ExpRange(1E-5,2*k_ss;θ=θ_k,N=n_k) ; # Curved grid between 0 and 2*k_ss
-            else
-            error("scale_type must be either Poly or Exp")
-            end
-        else
-        k_grid = range(1E-5,2*k_ss,length=n_k)
-        end
-        # Return
-        return k_grid
-    end
-
-## Model Parameters
-
-# Generate structure of model objects
-    @with_kw struct Model
-        # Parameters
-        p::Par = Par() # Model paramters in their own structure
-        # Grids
-        θ_k::Float64    = 1     # Curvature of k_grid
-        n_k::Int64      = 20    # Size of k_grid
-        n_k_fine::Int64 = 1000  # Size of fine grid for interpolation
-        k_grid          = Make_K_Grid(n_k,θ_k,p)    # k_grid for model solution
-        k_grid_fine     = Make_K_Grid(n_k_fine,1,p) # Fine grid for interpolation
-        # Value and policy functions
-        V         = Array{Float64}(undef,n_k)       # Value Function
-        G_kp      = Array{Float64}(undef,n_k)       # Policy Function
-        G_c       = Array{Float64}(undef,n_k)       # Policy Function
-        G_l       = Array{Float64}(undef,n_k)       # Policy Function
-        V_fine    = Array{Float64}(undef,n_k_fine)  # Value Function on fine grid
-        G_kp_fine = Array{Float64}(undef,n_k_fine)  # Policy Function on fine grid
-        G_c_fine  = Array{Float64}(undef,n_k_fine)  # Policy Function on fine grid
-        G_l_fine  = Array{Float64}(undef,n_k_fine)  # Policy Function on fine grid
-        # Anaytical Solutions
-        V_a       = Array{Float64}(undef,n_k_fine)  # Analytical Value Function on fine grid
-        G_kp_a    = Array{Float64}(undef,n_k_fine)  # Analytical Policy Function on fine grid
-        G_c_a     = Array{Float64}(undef,n_k_fine)  # Analytical Policy Function on fine grid
-        Euler     = Array{Float64}(undef,n_k_fine)  # Errors in Euler equation
-    end
-
-    M = Model()
 
 ## Optimal labot- Continuous
 
@@ -272,7 +273,7 @@ using Parameters # Pkg.add("Parameters") # https://github.com/mauro3/Parameter
         L(x) = -utility(k,kp,x,p)
         result = maximize(L,0,1)
         converged(result) || error("Failed to converge in $(iterations(result)) iterations")
-        l = maximizer(result)[1]
+        l = maximizer(result)
         return l
     end
 
@@ -403,7 +404,7 @@ function T_cts_max(M::Model)
     Obj_Fun(k,x1,x2) = -utility(k,x1,x2,p) - β*Vp(x1)
     for i = 1:n_k
         # Min and max kp given current k
-        kp_max = min(get_kp_max(k_grid[i]), k_grid[end])
+        kp_max = get_kp_max(k_grid[i])
         k_grid[i] < k_ss || (kp_min = k_ss)
         k_grid[i] > k_ss || (kp_max = k_ss)
             # Note: we can be smarter here.
@@ -421,9 +422,7 @@ function T_cts_max(M::Model)
         if k_corner
             # Define objective function: Right hand side of Bellman operator
                 # Optimizer will minimize so we need the negative of the function
-
-
-             V[i]    = utility(k_grid[i],k_0,l_0,p) + β*Vp(k_0)
+             V[i]    = Obj_Fun(k_grid[i],k_0,l_0)
              G_kp[i] = k_0
              G_l[i] = l_0
              println("\n corner solution for capital")
@@ -454,8 +453,8 @@ function T_cts_max(M::Model)
             #kp_min, kp_max = mnbrak(kp_min,(kp_max+kp_min)/2,Obj_Fun,kp_min,kp_max)
         else
             # Maximize
-            upper = [kp_max,l_max]
-            lower = [kp_min,l_min]
+            upper = [kp_max,1]
+            lower = [kp_min,0]
             init_val = [(kp_min+kp_max)/2,l_ss]
             #inner_optimizer = NelderMead()
             min_result = Optim.optimize(x->Obj_Fun(k_grid[i],x[1],x[2]),lower,upper,init_val,NelderMead(), Optim.Options(iterations=10^6))

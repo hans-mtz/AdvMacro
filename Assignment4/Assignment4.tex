@@ -1,39 +1,46 @@
-\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 %
-\documentclass[]{article}
+\documentclass[
+]{article}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
-  \usepackage{textcomp} % provides euro and other symbols
-\else % if luatex or xelatex
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
   \usepackage{unicode-math}
-  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
-% use upquote if available, for straight quotes in verbatim environments
+% Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-% use microtype if available
-\IfFileExists{microtype.sty}{%
-\usepackage[]{microtype}
-\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
-\usepackage{hyperref}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-            pdftitle={Advanced Macro},
-            pdfauthor={Hans Martinez},
-            pdfborder={0 0 0},
-            breaklinks=true}
-\urlstyle{same}  % don't use monospace font for urls
+  pdftitle={Advanced Macro},
+  pdfauthor={Hans Martinez},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -75,6 +82,15 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -84,37 +100,25 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{0}
-% Redefines (sub)paragraphs to behave more like sections
-\ifx\paragraph\undefined\else
-\let\oldparagraph\paragraph
-\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
-\fi
-\ifx\subparagraph\undefined\else
-\let\oldsubparagraph\subparagraph
-\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
-\fi
-
-% set default figure placement to htbp
+% Set default figure placement to htbp
 \makeatletter
 \def\fps@figure{htbp}
 \makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 
+\title{Advanced Macro}
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-
-\title{Advanced Macro}
-\providecommand{\subtitle}[1]{}
 \subtitle{Assignment 4}
 \author{Hans Martinez}
-\date{Oct 17, 2020}
+\date{Nov 09, 2020}
 
 \begin{document}
 \maketitle
@@ -132,15 +136,44 @@ code: click here.}
 \end{Highlighting}
 \end{Shaded}
 
-Nested optimization.
+\hypertarget{direct-maximization-over-a-pair-of-variables.}{%
+\subsubsection{Direct maximization over a pair of
+variables.}\label{direct-maximization-over-a-pair-of-variables.}}
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment4/VFI_univariate_max_Euler_20_3.6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment4/VFI_univariate_max_G_kp_20_3.6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment4/VFI_univariate_max_G_l_20_3.6} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Assignment4/VFI_univariate_max_V_20_3.6} 
+{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_mvariate_max_Euler_20_4.0} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_mvariate_max_G_kp_20_4.0} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_mvariate_max_G_l_20_4.0} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_mvariate_max_V_20_4.0} 
 
 }
 
-\caption{Nested Interpolation}\label{fig:unnamed-chunk-2}
+\caption{Multivariate maximization}\label{fig:unnamed-chunk-2}
 \end{figure}
+
+\hypertarget{direct-maximization-over-a-single-variable-with-other-variables-soved-for-analytically.}{%
+\subsubsection{Direct maximization over a single variable with other
+variables soved for
+analytically.}\label{direct-maximization-over-a-single-variable-with-other-variables-soved-for-analytically.}}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_univariate_max_Euler_20_4.0} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_univariate_max_G_kp_20_4.0} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_univariate_max_G_l_20_4.0} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_univariate_max_V_20_4.0} 
+
+}
+
+\caption{Univariate maximization}\label{fig:unnamed-chunk-3}
+\end{figure}
+
+\begin{longtable}[]{@{}llllllll@{}}
+\toprule
+Section & ncalls & time & \%tot & avg & alloc & \%tot &
+avg\tabularnewline
+\midrule
+\endhead
+Monovariate VFI n\_k=20 \(\theta\)\_k=4 & 1 & 23.0s & 56.9\% & 23.0s &
+1.66GiB & 50.9\% & 1.66GiB\tabularnewline
+Multivariate VFI n\_k=20 \(\theta\)\_k=4 & 1 & 17.4s & 43.1\% & 17.4s &
+1.60GiB & 49.1\% & 1.60GiB\tabularnewline
+\bottomrule
+\end{longtable}
 
 \end{document}
