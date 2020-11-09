@@ -3,9 +3,9 @@ title: "Advanced Macro"
 author: "Hans Martinez"
 date: "`r format(Sys.time(), '%b %d, %Y')`"
 output:
+  html_document: default
   pdf_document:
     keep_tex: true
-  html_document: default
   bookdown::pdf_document2: default
 subtitle: "Assignment 4"
 ---
