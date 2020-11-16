@@ -116,64 +116,69 @@
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-\subtitle{Assignment 4}
+\subtitle{Assignment 5}
 \author{Hans Martinez}
 \date{Nov 16, 2020}
 
 \begin{document}
 \maketitle
 
-\hypertarget{optimization}{%
-\section{Optimization}\label{optimization}}
+\hypertarget{integration}{%
+\section{Integration}\label{integration}}
 
-\href{https://github.com/hans-mtz/AdvMacro/blob/master/Assignment4/A4f.jl}{Julia
+\href{https://github.com/hans-mtz/AdvMacro/blob/master/Assignment5/A5.jl}{Julia
 code: click here.}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# Julia code}
-\CommentTok{# See A4f.jl}
+\CommentTok{# See A5.jl}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{direct-maximization-over-a-pair-of-variables.}{%
-\subsubsection{Direct maximization over a pair of
-variables.}\label{direct-maximization-over-a-pair-of-variables.}}
+\hypertarget{discretization-of-an-ar1-process}{%
+\subsubsection{Discretization of an AR(1)
+process}\label{discretization-of-an-ar1-process}}
 
-\begin{figure}
+\begin{enumerate}
+\def\labelenumi{\alph{enumi})}
+\tightlist
+\item
+  Simulate a Markov chain
+\item
+  Use Tauchen and Rouwenhorst's to discretize
+\item
+  Compute the first four moments
+\item
+  Plot
+\end{enumerate}
 
-{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_mvariate_max_Euler_20_4.0} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_mvariate_max_G_kp_20_4.0} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_mvariate_max_G_l_20_4.0} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_mvariate_max_V_20_4.0} 
-
-}
-
-\caption{Multivariate maximization}\label{fig:unnamed-chunk-2}
-\end{figure}
-
-\hypertarget{direct-maximization-over-a-single-variable-with-other-variables-soved-for-analytically.}{%
-\subsubsection{Direct maximization over a single variable with other
-variables soved for
-analytically.}\label{direct-maximization-over-a-single-variable-with-other-variables-soved-for-analytically.}}
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_univariate_max_Euler_20_4.0} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_univariate_max_G_kp_20_4.0} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_univariate_max_G_l_20_4.0} \includegraphics[width=0.5\linewidth,height=0.2\textheight]{Figures/VFI_univariate_max_V_20_4.0} 
-
-}
-
-\caption{Univariate maximization}\label{fig:unnamed-chunk-3}
-\end{figure}
-
-\begin{longtable}[]{@{}llllllll@{}}
+\begin{longtable}[]{@{}rrrrrr@{}}
 \toprule
-Section & ncalls & time & \%tot & avg & alloc & \%tot &
-avg\tabularnewline
+& Data & Tauchen & Tauchen & Rouwenhorst & Rouwenhorst\tabularnewline
 \midrule
 \endhead
-Monovariate VFI n\_k=20 \(\theta\)\_k=4 & 1 & 23.0s & 56.9\% & 23.0s &
-1.66GiB & 50.9\% & 1.66GiB\tabularnewline
-Multivariate VFI n\_k=20 \(\theta\)\_k=4 & 1 & 17.4s & 43.1\% & 17.4s &
-1.60GiB & 49.1\% & 1.60GiB\tabularnewline
+& & \(N = 5\) & \(N = 15\) & \(N = 5\) & \(N = 15\)\tabularnewline
+\(mean\) & \(-0.075\) & \(-0.002\) & \(0.049\) & \(0.071\) &
+\(0.08\)\tabularnewline
+\(var\) & \(22.214\) & \(13.94\) & \(12.168\) & \(20.772\) &
+\(21.403\)\tabularnewline
+\(skew\) & \(0.056\) & \(-0.01\) & \(-0.005\) & \(0.021\) &
+\(-0.042\)\tabularnewline
+\(kurt\) & \(-0.13\) & \(-0.981\) & \(-0.998\) & \(-0.491\) &
+\(-0.191\)\tabularnewline
+\(acorr\) & \(0.905\) & \(0.84\) & \(0.845\) & \(0.898\) &
+\(0.902\)\tabularnewline
 \bottomrule
 \end{longtable}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.9\linewidth,height=0.5\textheight]{Figures/Rouwen} \includegraphics[width=0.9\linewidth,height=0.5\textheight]{Figures/Tauchen} 
+
+}
+
+\caption{Density of Markov chains}\label{fig:unnamed-chunk-2}
+\end{figure}
 
 \end{document}

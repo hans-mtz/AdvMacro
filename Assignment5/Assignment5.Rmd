@@ -1,0 +1,58 @@
+---
+title: "Advanced Macro"
+author: "Hans Martinez"
+date: "`r format(Sys.time(), '%b %d, %Y')`"
+output:
+  html_document: default
+  pdf_document:
+    keep_tex: true
+  bookdown::pdf_document2: default
+subtitle: "Assignment 5"
+---
+
+```{r setup, include=FALSE, cache=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(engine.path = list(
+  julia = '/Applications/Julia-1.5.app/Contents/Resources/julia/bin'
+))
+```
+```{r julia, eval =FALSE, include=FALSE}
+library(JuliaCall)
+julia_home<-julia_setup(JULIA_HOME = "/Applications/Julia-1.5.app/Contents/Resources/julia/bin")
+```
+
+<!-- ```{=latex} -->
+# Integration
+
+[Julia code: click here.](https://github.com/hans-mtz/AdvMacro/blob/master/Assignment5/A5.jl)
+
+```{julia, eval=FALSE}
+# Julia code
+# See A5.jl
+
+```
+
+### Discretization of an AR(1) process
+
+a) Simulate a Markov chain
+b) Use Tauchen and Rouwenhorst's to discretize
+c) Compute the first four moments
+d) Plot
+
+
+|         |   Data   | Tauchen  | Tauchen    |    Rouwenhorst | Rouwenhorst |
+| -------:| --------:| ---------:| ---------:| --------------:| -------------:|
+|         |          |   $N = 5$ |  $N = 15$ |        $N = 5$ |      $N = 15$ |
+|  $mean$ | $-0.075$ |  $-0.002$ |   $0.049$ |        $0.071$ |        $0.08$ |
+|   $var$ | $22.214$ |   $13.94$ |  $12.168$ |       $20.772$ |      $21.403$ |
+|  $skew$ |  $0.056$ |   $-0.01$ |  $-0.005$ |        $0.021$ |      $-0.042$ |
+|  $kurt$ |  $-0.13$ |  $-0.981$ |  $-0.998$ |       $-0.491$ |      $-0.191$ |
+| $acorr$ |  $0.905$ |    $0.84$ |   $0.845$ |        $0.898$ |       $0.902$ |
+
+
+```{r, out.width='90%', out.height ='50%',fig.align='center', fig.cap='Density of Markov chains', echo=FALSE, fig.show='hold'}
+knitr::include_graphics(c('Figures/Rouwen.png',
+                          'Figures/Tauchen.png'))
+```
+
+

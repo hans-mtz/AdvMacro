@@ -26,11 +26,11 @@ julia_home<-julia_setup(JULIA_HOME = "/Applications/Julia-1.5.app/Contents/Resou
 
 
 
-[Julia code: click here.](https://github.com/hans-mtz/AdvMacro/blob/master/A4.jl)
+[Julia code: click here.](https://github.com/hans-mtz/AdvMacro/blob/master/Assignment4/A4f.jl)
 
 ```{julia, eval=FALSE}
 # Julia code
-# See A4.jl
+# See A4f.jl
 
 ```
 
