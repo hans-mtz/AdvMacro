@@ -3,9 +3,9 @@ title: "Advanced Macro"
 author: "Hans Martinez"
 date: "`r format(Sys.time(), '%b %d, %Y')`"
 output:
-  html_document: default
   pdf_document:
     keep_tex: true
+  html_document: default
   bookdown::pdf_document2: default
 subtitle: "Assignment 5"
 ---
@@ -54,5 +54,16 @@ d) Plot
 knitr::include_graphics(c('Figures/Rouwen.png',
                           'Figures/Tauchen.png'))
 ```
+
+# Application 
+
+a) Discretize using Rouwenhorst's
+b) Solve planner's problem and plot
+
+```{r, out.width='90%', out.height ='50%',fig.align='center', fig.cap='Solution plot', echo=FALSE, fig.show='hold'}
+knitr::include_graphics(c('Figures/contour_vf.png',
+                          'Figures/surface_vf.png'))
+```
+
 
 
