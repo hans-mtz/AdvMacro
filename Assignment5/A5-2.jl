@@ -1,21 +1,43 @@
-using Random, Distributions
-using Parameters
-using Statistics
+# using Random, Distributions
+# using Parameters
+# using Statistics
+# using Plots
+# using LinearAlgebra
+# using Latexify
+# using PrettyTables
+# using Interpolations
+# using Dierckx
+# using ForwardDiff
+# using Optim
+#      using Optim: converged, maximum, maximizer, minimizer, iterations
+# using Roots
+# include("Scaled_Interpolation_Functions.jl")
+
+cd("/Volumes/SSD Hans/Github/MacroFall2020/AdvMacro/Assignment5")
+# mkpath("Figures")
 using Plots
+# using LateXStrings # Pkg.add("LaTeXStrings") # https://github.com/stevengj/LaTeXStrings.jl
+using Dierckx # Pkg.add("Dierckx") # https://github.com/kbarbary/Dierckx.jl
+using Interpolations # Pkg.add("Interpolations") # https://github.com/JuliaMath/Interpolations.jl
+using ForwardDiff # Pkg.add("ForwardDiff") # https://github.com/JuliaDiff/ForwardDiff.jl
+using Optim # Pkg.add("Optim") # https://julianlsolvers.github.io/Optim.jl/stable/
+    using Optim: converged, maximum, maximizer, minimizer, iterations
+using Roots # Pkg.add("Roots") # https://github.com/JuliaMath/Roots.jl
+using Parameters # Pkg.add("Parameters") # https://github.com/mauro3/Parameters.jl
+using Distributions #Pkg.add("Distributions")
+using QuadGK # Pkg.add("QuadGK") # https://juliamath.github.io/QuadGK.jl/latest/
 using LinearAlgebra
+using Random
+using Statistics
 using Latexify
-using PrettyTables
-using Interpolations
-using Dierckx
-using ForwardDiff
-using Optim
-     using Optim: converged, maximum, maximizer, minimizer, iterations
-using Roots
-include("Scaled_Interpolation_Functions.jl")
+Pkg.add("StatsPlots")
+using StatsPlots
+# Call Scaled Interpolation Functions
+    include("../Scaled_Interpolation_Functions.jl")
 
 
 # Set seed
-Random.seed!(420)
+Random.seed!(0021)
 
 # Parameters
     # Generate structure for parameters using Parameters module
@@ -221,11 +243,11 @@ function VFI_fixedpoint(T::Function,M::Model)
         V_dist = maximum(abs.(V_new./V_old.-1))
         V_old = V_new
         # Report progress
-        println("   VFI Loop: iter=$iter, dist=",100*V_dist," %")
+        # println("   VFI Loop: iter=$iter, dist=",100*V_dist," %")
         # Report progress every 100 iterations
-        #if mod(iter,100)==0
-        #    println("   VFI Loop: iter=$iter, dist=",100*V_dist,"%")
-        #end
+        if mod(iter,100)==0
+           println("   VFI Loop: iter=$iter, dist=",100*V_dist,"%")
+        end
         # Check if converged
         if V_dist <= dist_tol
             V_new, G_kp, G_c, G_l = T(Model(M,V=copy(V_new)))
@@ -351,10 +373,10 @@ end
 # Surface and contour plot of the value function
 gr()
 x= Mc.k_grid_fine; y=z_grid_fine; f=V_fine_3d;
-plot(x,y,f, st=:surface,xlabel="capital",ylabel="productivity") # Surface plot
-savefig("./Figures/surface_vf.pdf")
-plot(x,y,f, st=:contour,xlabel="capital",ylabel="productivity",nlevels=100, width=2, size=[800,480]) # Contour plot
-savefig("./Figures/contour_vf.pdf")
+plot(x,y,f, st=:surface,xlabel="Capital",ylabel="Productivity") # Surface plot
+title!("Surface 3D plot")
+savefig("./Figures/surface_vf")
 
-                    ### Simulate 100 years of data ###
-# Start at
+plot(x,y,f, st=:contour,xlabel="Capital",ylabel="Productivity",nlevels=100, width=2, size=[800,480]) # Contour plot
+title!("Level curves")
+savefig("./Figures/contour_vf")
