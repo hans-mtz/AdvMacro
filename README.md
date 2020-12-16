@@ -1,7 +1,7 @@
 # AdvMacro
  ## Computational Macro
  
- Repository for solutions to problem sets of Computational Macro Class PHD course, Fall 2020.
+ Repository for solutions to problem sets of Computational Macro Class, Western University, Economics PHD course, Fall 2020.
  
  Hans Martinez (hmarti33 at uwo.ca)
 
