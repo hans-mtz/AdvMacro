@@ -1,0 +1,44 @@
+---
+title: "Advanced Macro"
+author: "Hans Martinez"
+date: "`r format(Sys.time(), '%b %d, %Y')`"
+output:
+  pdf_document:
+    keep_tex: true
+  html_document: default
+  bookdown::pdf_document2: default
+subtitle: "Assignment 6"
+---
+
+```{r setup, include=FALSE, cache=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+# knitr::opts_chunk$set(engine.path = list(
+#   julia = '/Applications/Julia-1.5.app/Contents/Resources/julia/bin'
+# ))
+```
+
+```{r julia, eval =FALSE, include=FALSE}
+# library(JuliaCall)
+# julia_home<-julia_setup(JULIA_HOME = "/Applications/Julia-1.5.app/Contents/Resources/julia/bin")
+```
+
+<!-- ```{=latex} -->
+# EGM
+
+[Julia code: click here.](https://github.com/hans-mtz/AdvMacro/blob/master/Assignment6/A6.jl)
+
+```{r, eval=FALSE}
+# Julia code
+# See A6.jl
+
+```
+
+
+```{r,out.height ='50%', fig.align='center', fig.cap="Solving SP's using EGM, 100  points capital grid, 2.5 curvature and 10 points productivity grid.", echo=FALSE}
+knitr::include_graphics(c('Figures/surface_vf.png',
+                          'Figures/contour_vf.png'))
+```
+
+
+
+

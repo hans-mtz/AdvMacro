@@ -1,0 +1,43 @@
+---
+title: "Advanced Macro"
+author: "Hans Martinez"
+date: "`r format(Sys.time(), '%b %d, %Y')`"
+output:
+  html_document: default
+  pdf_document:
+    keep_tex: true
+  bookdown::pdf_document2: default
+subtitle: "Assignment 7"
+---
+
+```{r setup, include=FALSE, cache=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+# knitr::opts_chunk$set(engine.path = list(
+#   julia = '/Applications/Julia-1.5.app/Contents/Resources/julia/bin'
+# ))
+```
+
+```{r julia, eval =FALSE, include=FALSE}
+# library(JuliaCall)
+# julia_home<-julia_setup(JULIA_HOME = "/Applications/Julia-1.5.app/Contents/Resources/julia/bin")
+```
+
+<!-- ```{=latex} -->
+# RCE
+
+[Julia code: click here.](https://github.com/hans-mtz/AdvMacro/blob/master/Assignment7/A7.jl)
+
+```{r, eval=FALSE}
+# Julia code
+# See A7.jl
+```
+
+
+```{r,out.height ='50%', fig.align='center', fig.cap="Solving SP's using EGM, 20  points capital grid, 2 curvature and 5 points productivity grid.", echo=FALSE}
+knitr::include_graphics(c('Figures/surface_vf_rce.png',
+                          'Figures/contour_vf_rce.png'))
+```
+
+
+
+
