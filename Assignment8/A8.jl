@@ -1,28 +1,60 @@
-# Emmanuel Murray LEclair
-# November 2020
-# Hugget economy (Problem set 8 - Question 1)
-mkpath("Figures")
-using SparseArrays
-using Random, Distributions
-using Statistics
-using LinearAlgebra
+# %%
+# Hans Martinez
+# Code based off Emmanuel's Code
+
+# cd("/Volumes/SSD Hans/Github/MacroFall2020/AdvMacro/Assignment8")
+# mkpath("Figures")
+# Pkg.add("Plots")
+# Pkg.add.(["Optim" ,"Roots","Parameters","Distributions","QuadGK"])
+# Pkg.add.(["Latexify","PrettyTables","StatsPlots"])
 using Plots
-using Interpolations
-using Dierckx
-using ForwardDiff
-using Optim
+# using LateXStrings # Pkg.add("LaTeXStrings") # https://github.com/stevengj/LaTeXStrings.jl
+# Pkg.add("Dierckx")
+using Dierckx # Pkg.add("Dierckx") # https://github.com/kbarbary/Dierckx.jl
+# Pkg.add("Interpolations")
+using Interpolations # Pkg.add("Interpolations") # https://github.com/JuliaMath/Interpolations.jl
+# Pkg.add("ForwardDiff")
+using ForwardDiff # Pkg.add("ForwardDiff") # https://github.com/JuliaDiff/ForwardDiff.jl
+using Optim # Pkg.add("Optim") # https://julianlsolvers.github.io/Optim.jl/stable/
     using Optim: converged, maximum, maximizer, minimizer, iterations
-using Roots
-using Parameters
-include("Scaled_Interpolation_Functions.jl")
-# using .VFI_Toolbox
-println(" ")
-println("------------------------")
-println("Hugget (1993) in Julia")
-println("PWD: ",pwd())
-println("Solve Hugget's model with EGM and several implementations of histogram method")
-println("------------------------")
-println(" ")
+using Roots # Pkg.add("Roots") # https://github.com/JuliaMath/Roots.jl
+using Parameters # Pkg.add("Parameters") # https://github.com/mauro3/Parameters.jl
+using Distributions #Pkg.add("Distributions")
+using QuadGK # Pkg.add("QuadGK") # https://juliamath.github.io/QuadGK.jl/latest/
+using LinearAlgebra
+using Random
+using Statistics
+using Latexify
+# Pkg.add("StatsPlots")
+using StatsPlots
+# Call Scaled Interpolation Functions
+    include("../Scaled_Interpolation_Functions.jl")
+
+# Pkg.add("SparseArrays")
+using SparseArrays
+
+# mkpath("Figures")
+#
+# using Random, Distributions
+# using Statistics
+# using LinearAlgebra
+# using Plots
+# using Interpolations
+# using Dierckx
+# using ForwardDiff
+# using Optim
+#     using Optim: converged, maximum, maximizer, minimizer, iterations
+# using Roots
+# using Parameters
+# include("Scaled_Interpolation_Functions.jl")
+# # using .VFI_Toolbox
+# println(" ")
+# println("------------------------")
+# println("Hugget (1993) in Julia")
+# println("PWD: ",pwd())
+# println("Solve Hugget's model with EGM and several implementations of histogram method")
+# println("------------------------")
+# println(" ")
 
 
 #-----------------------------------------------------------
@@ -96,6 +128,8 @@ function Make_A_Grid(n_a,θ_a,a_min,a_max,p::Par)
     return a_grid
 end
 
+
+# %%
     # Generate structure of model objects
     @with_kw struct Model
         # Parameters
@@ -164,6 +198,7 @@ function get_ind(a_grid,g_a)
     end
 end
 
+# %%
 
 # PFI Fixed Point - Iterate over policy functions for a given guess of the interest rate r
 function PFI_Fixed_Point(T::Function,M::Model,G_ap_old=nothing)
@@ -302,6 +337,7 @@ function Value_Function(M::Model)
     return M
 end
 
+# %%
 # Compute stationary distribution with Histogram method
 # Histogram method
 function Histogram_Method_Loop(M::Model,N_H=nothing,Γ_0=nothing)
@@ -409,6 +445,8 @@ function Histogram_Method_Loop(M::Model,N_H=nothing,Γ_0=nothing)
     return M
 end
 
+# %%
+
 # Do optimization then check market clearing
 function market_clearing(r,M::Model)
     # Iterate over policy function given r
@@ -447,6 +485,8 @@ function S_RCE(M::Model)
     return M
 end
 
+# %%
+
 # Function that makes 3-d plots of the value function, policy function and asset distributon
 function plot_hugget(M::Model)
     # Interpolate the value function, policy function and asset distribution along the income shock dimension
@@ -463,14 +503,15 @@ function plot_hugget(M::Model)
     Γ_fine3d = Γ_fine3d./(sum(sum(Γ_fine3d)))
     # Plots of the value function, policy function and asset distributon
     gr()
-    plot(ϵ_grid_fine,M.a_grid_fine,V_fine3d, st=:contour,xlabel="income",ylabel="assets",title="Value Function -hugget: n_ϵ=$(M.n_ϵ) - n_a=$(M.n_a) - θ_a=$(M.θ_a), eq r = $(M.r)") # Surface plot
-    savefig("./Figures/surface_vf_hugget.pdf")
-    plot(ϵ_grid_fine,M.a_grid_fine,G_ap_fine3d, st=:contour,xlabel="income",ylabel="assets",title="Asset policy -hugget: n_ϵ=$(M.n_ϵ) - n_a=$(M.n_a) - θ_a=$(M.θ_a), eq r = $(M.r)") # Surface plot
-    savefig("./Figures/surface_policy_hugget.pdf")
-    plot(ϵ_grid_fine,M.a_grid_fine,Γ_fine3d, st=:surface,xlabel="income",ylabel="assets",title="Distribution -hugget: n_ϵ=$(M.n_ϵ) - n_a=$(M.n_a) - θ_a=$(M.θ_a), eq r = $(M.r)") # Surface plot
-    savefig("./Figures/surface_dist_hugget.pdf")
+    plot(ϵ_grid_fine,M.a_grid_fine,V_fine3d, st=:contour,xlabel="Income",ylabel="Assets",title="Value Function - Hugget") # Surface plot
+    savefig("./Figures/surface_vf_hugget")
+    plot(ϵ_grid_fine,M.a_grid_fine,G_ap_fine3d, st=:contour,xlabel="Income",ylabel="assets",title="Asset policy - Hugget") # Surface plot
+    savefig("./Figures/surface_policy_hugget")
+    plot(ϵ_grid_fine,M.a_grid_fine,Γ_fine3d, st=:surface,xlabel="Income",ylabel="Assets",title="Distribution - Hugget") # Surface plot
+    savefig("./Figures/surface_dist_hugget")
 end
 
+# %%
 # Call PFI
 M_hugget = S_RCE(Model(n_a=100,n_ϵ=11))
 # Get plots
