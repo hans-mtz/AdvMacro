@@ -5,7 +5,7 @@
  
  Hans Martinez (hmarti33 at uwo.ca)
 
-## Soulutions
+## Solutions
 
 Assignment 1 : [pdf](https://github.com/hans-mtz/AdvMacro/blob/master/Assignment1/Assignment-1.pdf) [html](https://raw.githack.com/hans-mtz/AdvMacro/master/Assignment1/Assignment-1.html)
 
