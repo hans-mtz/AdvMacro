@@ -15,3 +15,5 @@ Assignment 6 : [pdf](https://github.com/hans-mtz/AdvMacro/blob/master/Assignment
 
 Assignment 7 : [pdf](https://github.com/hans-mtz/AdvMacro/blob/master/Assignment7/Assignment7.pdf) [html](https://raw.githack.com/hans-mtz/AdvMacro/master/Assignment7/Assignment7.html)
 
+Assignment 8 : [pdf](https://github.com/hans-mtz/AdvMacro/blob/master/Assignment8/Assignment8.pdf) [html](https://raw.githack.com/hans-mtz/AdvMacro/master/Assignment8/Assignment8.html)
+

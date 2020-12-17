@@ -1,0 +1,44 @@
+---
+title: "Advanced Macro"
+author: "Hans Martinez"
+date: "`r format(Sys.time(), '%b %d, %Y')`"
+output:
+  pdf_document:
+    keep_tex: true
+  html_document: default
+  bookdown::pdf_document2: default
+subtitle: "Assignment 8"
+---
+
+```{r setup, include=FALSE, cache=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+# knitr::opts_chunk$set(engine.path = list(
+#   julia = '/Applications/Julia-1.5.app/Contents/Resources/julia/bin'
+# ))
+```
+
+```{r julia, eval =FALSE, include=FALSE}
+# library(JuliaCall)
+# julia_home<-julia_setup(JULIA_HOME = "/Applications/Julia-1.5.app/Contents/Resources/julia/bin")
+```
+
+<!-- ```{=latex} -->
+# Hugget's model
+
+[Julia code: click here.](https://github.com/hans-mtz/AdvMacro/blob/master/Assignment8/A8.jl)
+
+```{r, eval=FALSE}
+# Julia code
+# See A8.jl
+```
+
+
+```{r,out.height ='50%', fig.align='center', fig.cap="Solving Hugget's model.", echo=FALSE}
+knitr::include_graphics(c('Figures/surface_dist_hugget.png',
+                          'Figures/surface_policy_hugget.png',
+                          'Figures/surface_vf_hugget.png'))
+```
+
+
+
+
