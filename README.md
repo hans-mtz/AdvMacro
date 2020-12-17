@@ -1,5 +1,11 @@
 # AdvMacro
-Computational Macro
+ ## Computational Macro
+ 
+ Repository for solutions to problem sets of Computational Macro Class, Western University, Economics PHD course, Fall 2020.
+ 
+ Hans Martinez (hmarti33 at uwo.ca)
+
+## Soulutions
 
 Assignment 1 : [pdf](https://github.com/hans-mtz/AdvMacro/blob/master/Assignment1/Assignment-1.pdf) [html](https://raw.githack.com/hans-mtz/AdvMacro/master/Assignment1/Assignment-1.html)
 
